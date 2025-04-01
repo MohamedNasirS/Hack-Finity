@@ -91,11 +91,22 @@ export default {
           to: { height: '0' }
         },
         'shooting-star': {
-          '0%': { transform: 'translateX(0) translateY(0)', opacity: '1' },
-          '70%': { opacity: '1' },
+          '0%': { 
+            transform: 'translateX(0) translateY(0)', 
+            opacity: '0'  // Start completely transparent
+          },
+          '10%': {
+            opacity: '0.3'  // Fade in gradually
+          },
+          '20%': {
+            opacity: '1'  // Fully visible
+          },
+          '80%': {
+            opacity: '1'  // Stay visible for most of the animation
+          },
           '100%': { 
             transform: 'translateX(calc(cos(var(--angle, 0deg)) * 100vw)) translateY(calc(sin(var(--angle, 0deg)) * 100vh))', 
-            opacity: '0' 
+            opacity: '0'  // Fade out at the end
           }
         },
         'fade-in': {

@@ -22,23 +22,20 @@ export const StarsBackground = () => {
       star.style.top = `${startY}px`;
       star.style.animationDelay = `${delay}s`;
       
-      // Random animation duration between 2 and 6 seconds (faster than before)
-      const duration = 2 + Math.random() * 4;
+      // Random animation duration between 3 and 7 seconds
+      const duration = 3 + Math.random() * 4;
       star.style.animationDuration = `${duration}s`;
       
-      // Random rotation to create different trajectories (wider range)
+      // Random rotation to create different trajectories
       const angle = Math.random() * 360; // 0-360 degrees for all directions
       star.style.transform = `rotate(${angle}deg)`;
       
-      star.style.opacity = '0';
-      
-      // Start animation
+      // Apply the animation with proper fade-in
       container.appendChild(star);
       
       // Trigger reflow to ensure animation plays
       void star.offsetWidth;
-      star.style.opacity = '1';
-      star.style.animation = `shooting-star ${duration}s linear forwards`;
+      star.style.animation = `shooting-star ${duration}s ease-out forwards`;
       
       // Remove the star after animation completes
       setTimeout(() => {
@@ -49,9 +46,9 @@ export const StarsBackground = () => {
       }, duration * 1000);
     };
     
-    // Increase initial stars count
+    // Initial stars - create gradually
     for (let i = 0; i < 40; i++) {
-      setTimeout(createStar, Math.random() * 3000);
+      setTimeout(createStar, i * 100); // Stagger the creation slightly
     }
     
     return () => {
