@@ -113,6 +113,20 @@ export default {
           '0%, 100%': { opacity: '0.5' },
           '50%': { opacity: '0.7' }
         },
+        'aurora-wave': {
+          '0%': { 
+            transform: 'scaleX(1.0) translateX(0%)',
+            opacity: '0.4'
+          },
+          '50%': { 
+            transform: 'scaleX(1.1) translateX(3%)',
+            opacity: '0.6'
+          },
+          '100%': { 
+            transform: 'scaleX(0.9) translateX(-3%)',
+            opacity: '0.3'
+          }
+        },
         'fade-in': {
           '0%': { opacity: '0', transform: 'translateY(10px)' },
           '100%': { opacity: '1', transform: 'translateY(0)' }
@@ -127,6 +141,7 @@ export default {
         'accordion-up': 'accordion-up 0.2s ease-out',
         'shooting-star': 'shooting-star 5s linear forwards',
         'nebula-pulse': 'nebula-pulse 8s ease-in-out infinite',
+        'aurora-wave': 'aurora-wave 20s ease-in-out infinite alternate',
         'fade-in': 'fade-in 0.6s ease-out',
         'btn-pulse': 'btn-pulse 2s infinite'
       }

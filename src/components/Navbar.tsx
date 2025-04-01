@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
-import { Menu, X } from 'lucide-react';
+import { Menu, X, Home } from 'lucide-react';
 
 export const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -32,6 +32,17 @@ export const Navbar = () => {
           
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
+            <NavLink 
+              to="/" 
+              className={({ isActive }) => 
+                `text-sm font-medium transition-colors flex items-center ${
+                  isActive ? 'text-hackfinity-blue' : 'text-white/80 hover:text-white'
+                } nav-link`
+              }
+            >
+              <Home size={16} className="mr-1" />
+              Home
+            </NavLink>
             <NavLink 
               to="/about" 
               className={({ isActive }) => 
@@ -82,6 +93,18 @@ export const Navbar = () => {
       {isOpen && (
         <div className="md:hidden absolute top-full left-0 w-full bg-hackfinity-darkblue/95 backdrop-blur-md py-4 shadow-lg animate-fade-in">
           <nav className="flex flex-col space-y-4 px-4">
+            <NavLink 
+              to="/" 
+              className={({ isActive }) => 
+                `text-sm font-medium py-2 transition-colors flex items-center ${
+                  isActive ? 'text-hackfinity-blue' : 'text-white/80 hover:text-white'
+                }`
+              }
+              onClick={() => setIsOpen(false)}
+            >
+              <Home size={16} className="mr-1" />
+              Home
+            </NavLink>
             <NavLink 
               to="/about" 
               className={({ isActive }) => 

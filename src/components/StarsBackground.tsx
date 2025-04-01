@@ -63,6 +63,35 @@ export const StarsBackground = () => {
       setTimeout(createStar, i * 100); // Stagger the creation slightly
     }
     
+    // Create aurora elements
+    const createAurora = () => {
+      const aurora = document.createElement('div');
+      aurora.classList.add('aurora');
+      
+      // Random properties for variety
+      const width = 150 + Math.random() * 250;
+      const height = 300 + Math.random() * 400;
+      const x = Math.random() * window.innerWidth;
+      const y = (Math.random() * window.innerHeight * 0.5) + (window.innerHeight * 0.5);
+      
+      // Choose a random aurora color palette
+      const colorTypes = ['green-purple', 'blue-purple', 'teal-blue', 'pink-purple'];
+      const colorType = colorTypes[Math.floor(Math.random() * colorTypes.length)];
+      aurora.classList.add(`aurora-${colorType}`);
+      
+      aurora.style.width = `${width}px`;
+      aurora.style.height = `${height}px`;
+      aurora.style.left = `${x}px`;
+      aurora.style.bottom = `${y - window.innerHeight}px`;
+      
+      // Random animation timing
+      const animDuration = 15 + Math.random() * 20;
+      aurora.style.animationDuration = `${animDuration}s`;
+      
+      container.appendChild(aurora);
+      return aurora;
+    };
+    
     // Create nebulas (subtle cosmic clouds)
     const createNebula = () => {
       const nebula = document.createElement('div');
@@ -71,21 +100,27 @@ export const StarsBackground = () => {
       const size = 100 + Math.random() * 200; // Random size
       const x = Math.random() * window.innerWidth;
       const y = Math.random() * window.innerHeight;
-      const hue = Math.floor(Math.random() * 60) + 200; // Blue/purple hues
+      
+      // Use aurora-inspired colors for nebulas
+      const colorTypes = ['#9b87f5', '#0EA5E9', '#D6BCFA', '#8B5CF6', '#6E59A5'];
+      const color = colorTypes[Math.floor(Math.random() * colorTypes.length)];
       
       nebula.style.width = `${size}px`;
       nebula.style.height = `${size}px`;
       nebula.style.left = `${x}px`;
       nebula.style.top = `${y}px`;
-      nebula.style.background = `radial-gradient(circle, hsla(${hue}, 80%, 60%, 0.05) 0%, transparent 70%)`;
+      nebula.style.background = `radial-gradient(circle, ${color}20 0%, transparent 70%)`;
       
       container.appendChild(nebula);
       
       return nebula;
     };
     
+    // Create some auroras
+    const auroras = Array(4).fill(0).map(() => createAurora());
+    
     // Create some nebulas
-    const nebulas = Array(6).fill(0).map(() => createNebula());
+    const nebulas = Array(8).fill(0).map(() => createNebula());
     
     // Animation loop for interactive elements
     let animationFrameId: number;
@@ -93,10 +128,16 @@ export const StarsBackground = () => {
     const animate = () => {
       // Move nebulas based on mouse position
       nebulas.forEach((nebula) => {
-        const offsetX = (mousePosition.x - 0.5) * 20;
-        const offsetY = (mousePosition.y - 0.5) * 20;
+        const offsetX = (mousePosition.x - 0.5) * 30;
+        const offsetY = (mousePosition.y - 0.5) * 30;
         
         nebula.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
+      });
+      
+      // Subtle movement for auroras based on mouse position
+      auroras.forEach((aurora) => {
+        const offsetX = (mousePosition.x - 0.5) * 10;
+        aurora.style.transform = `translateX(${offsetX}px)`;
       });
       
       animationFrameId = requestAnimationFrame(animate);

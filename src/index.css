@@ -91,6 +91,35 @@
   mix-blend-mode: screen;
 }
 
+/* Aurora Borealis Effect */
+.aurora {
+  position: absolute;
+  border-radius: 100% 100% 0 0;
+  filter: blur(30px);
+  transform-origin: bottom center;
+  opacity: 0.4;
+  mix-blend-mode: screen;
+  animation: aurora-wave 20s ease-in-out infinite alternate;
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+
+.aurora-green-purple {
+  background: linear-gradient(180deg, rgba(155, 135, 245, 0.5) 0%, rgba(110, 89, 165, 0.3) 40%, rgba(70, 153, 117, 0.2) 80%);
+}
+
+.aurora-blue-purple {
+  background: linear-gradient(180deg, rgba(14, 165, 233, 0.5) 0%, rgba(155, 135, 245, 0.3) 40%, rgba(0, 191, 255, 0.2) 80%);
+}
+
+.aurora-teal-blue {
+  background: linear-gradient(180deg, rgba(214, 188, 250, 0.5) 0%, rgba(14, 165, 233, 0.3) 40%, rgba(45, 212, 191, 0.2) 80%);
+}
+
+.aurora-pink-purple {
+  background: linear-gradient(180deg, rgba(139, 92, 246, 0.5) 0%, rgba(217, 70, 239, 0.3) 40%, rgba(155, 135, 245, 0.2) 80%);
+}
+
 .countdown-item {
   @apply flex flex-col items-center justify-center bg-hackfinity-darkblue/50 backdrop-blur-sm rounded-lg p-4 w-20 md:w-24 mx-1;
 }
