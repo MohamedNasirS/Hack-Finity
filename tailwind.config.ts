@@ -109,6 +109,10 @@ export default {
             opacity: '0'  // Fade out at the end
           }
         },
+        'nebula-pulse': {
+          '0%, 100%': { opacity: '0.5' },
+          '50%': { opacity: '0.7' }
+        },
         'fade-in': {
           '0%': { opacity: '0', transform: 'translateY(10px)' },
           '100%': { opacity: '1', transform: 'translateY(0)' }
@@ -122,6 +126,7 @@ export default {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
         'shooting-star': 'shooting-star 5s linear forwards',
+        'nebula-pulse': 'nebula-pulse 8s ease-in-out infinite',
         'fade-in': 'fade-in 0.6s ease-out',
         'btn-pulse': 'btn-pulse 2s infinite'
       }

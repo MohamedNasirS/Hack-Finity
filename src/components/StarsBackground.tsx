@@ -1,13 +1,25 @@
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export const StarsBackground = () => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   
   useEffect(() => {
     if (!containerRef.current) return;
     
     const container = containerRef.current;
+    
+    // Track mouse position
+    const handleMouseMove = (e: MouseEvent) => {
+      setMousePosition({
+        x: e.clientX / window.innerWidth,
+        y: e.clientY / window.innerHeight
+      });
+    };
+    
+    window.addEventListener('mousemove', handleMouseMove);
+    
     const createStar = () => {
       const star = document.createElement('div');
       star.classList.add('shooting-star');
@@ -51,7 +63,51 @@ export const StarsBackground = () => {
       setTimeout(createStar, i * 100); // Stagger the creation slightly
     }
     
+    // Create nebulas (subtle cosmic clouds)
+    const createNebula = () => {
+      const nebula = document.createElement('div');
+      nebula.classList.add('nebula');
+      
+      const size = 100 + Math.random() * 200; // Random size
+      const x = Math.random() * window.innerWidth;
+      const y = Math.random() * window.innerHeight;
+      const hue = Math.floor(Math.random() * 60) + 200; // Blue/purple hues
+      
+      nebula.style.width = `${size}px`;
+      nebula.style.height = `${size}px`;
+      nebula.style.left = `${x}px`;
+      nebula.style.top = `${y}px`;
+      nebula.style.background = `radial-gradient(circle, hsla(${hue}, 80%, 60%, 0.05) 0%, transparent 70%)`;
+      
+      container.appendChild(nebula);
+      
+      return nebula;
+    };
+    
+    // Create some nebulas
+    const nebulas = Array(6).fill(0).map(() => createNebula());
+    
+    // Animation loop for interactive elements
+    let animationFrameId: number;
+    
+    const animate = () => {
+      // Move nebulas based on mouse position
+      nebulas.forEach((nebula) => {
+        const offsetX = (mousePosition.x - 0.5) * 20;
+        const offsetY = (mousePosition.y - 0.5) * 20;
+        
+        nebula.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
+      });
+      
+      animationFrameId = requestAnimationFrame(animate);
+    };
+    
+    animate();
+    
     return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+      cancelAnimationFrame(animationFrameId);
+      
       while (container.firstChild) {
         container.removeChild(container.firstChild);
       }
