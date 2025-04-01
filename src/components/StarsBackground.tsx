@@ -12,9 +12,9 @@ export const StarsBackground = () => {
       const star = document.createElement('div');
       star.classList.add('shooting-star');
       
-      // Random position and delay
-      const startX = Math.random() * window.innerWidth * 0.3;
-      const startY = Math.random() * window.innerHeight * 0.3;
+      // Random position across the entire viewport
+      const startX = Math.random() * window.innerWidth;
+      const startY = Math.random() * window.innerHeight;
       const delay = Math.random() * 15; // Random delay up to 15 seconds
       
       // Set random start position
@@ -22,12 +22,12 @@ export const StarsBackground = () => {
       star.style.top = `${startY}px`;
       star.style.animationDelay = `${delay}s`;
       
-      // Random animation duration between 4 and 8 seconds
-      const duration = 4 + Math.random() * 4;
+      // Random animation duration between 2 and 6 seconds (faster than before)
+      const duration = 2 + Math.random() * 4;
       star.style.animationDuration = `${duration}s`;
       
-      // Random rotation to create different trajectories
-      const angle = 15 + Math.random() * 30; // 15-45 degrees
+      // Random rotation to create different trajectories (wider range)
+      const angle = Math.random() * 360; // 0-360 degrees for all directions
       star.style.transform = `rotate(${angle}deg)`;
       
       star.style.opacity = '0';
@@ -49,8 +49,8 @@ export const StarsBackground = () => {
       }, duration * 1000);
     };
     
-    // Initial stars
-    for (let i = 0; i < 20; i++) {
+    // Increase initial stars count
+    for (let i = 0; i < 40; i++) {
       setTimeout(createStar, Math.random() * 3000);
     }
     

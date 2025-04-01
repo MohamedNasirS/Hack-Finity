@@ -93,7 +93,10 @@ export default {
         'shooting-star': {
           '0%': { transform: 'translateX(0) translateY(0)', opacity: '1' },
           '70%': { opacity: '1' },
-          '100%': { transform: 'translateX(100vw) translateY(100vh)', opacity: '0' }
+          '100%': { 
+            transform: 'translateX(calc(cos(var(--angle, 0deg)) * 100vw)) translateY(calc(sin(var(--angle, 0deg)) * 100vh))', 
+            opacity: '0' 
+          }
         },
         'fade-in': {
           '0%': { opacity: '0', transform: 'translateY(10px)' },
