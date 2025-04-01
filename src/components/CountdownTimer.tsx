@@ -17,10 +17,10 @@ export const CountdownTimer = ({ targetDate }: CountdownTimerProps) => {
     const difference = +new Date(targetDate) - +new Date();
     
     let timeLeft: TimeLeft = {
-      days: 0,
-      hours: 0,
-      minutes: 0,
-      seconds: 0
+      days: 10,
+      hours: 23,
+      minutes: 59,
+      seconds: 59
     };
 
     if (difference > 0) {
