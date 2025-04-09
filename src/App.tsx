@@ -4,7 +4,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { StarsBackground } from "./components/StarsBackground";
+import Aurora from "./components/Aurora";
 import { Navbar } from "./components/Navbar";
 import Footer from "./components/Footer";
 
@@ -24,7 +24,12 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <div className="relative min-h-screen font-['Inter']">
-          <StarsBackground />
+          <Aurora 
+            colorStops={["#3A29FF", "#FF94B4", "#FF3232"]} 
+            blend={0.5} 
+            amplitude={1.0}
+            speed={0.5}
+          />
           <Navbar />
           <Routes>
             <Route path="/" element={<Homepage />} />
