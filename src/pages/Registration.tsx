@@ -10,6 +10,8 @@ import { toast } from "@/components/ui/use-toast";
 import { CircleCheck } from 'lucide-react';
 import { useForm } from "react-hook-form";
 import { FormField, FormItem, FormLabel, FormControl, FormDescription, FormMessage, Form } from "@/components/ui/form";
+import { db } from "@/lib/firebase";
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 
 const RegistrationPage = () => {
   const [formStep, setFormStep] = useState(1);
@@ -47,19 +49,92 @@ const RegistrationPage = () => {
     }
   });
   
-  const handleSubmit = (data: any) => {
+  // Function to collect team member data from the form
+  const collectTeamMemberData = () => {
+    const teamMembers = [];
+    
+    for (let i = 1; i <= teamSize; i++) {
+      const nameInput = document.getElementById(`member${i}Name`) as HTMLInputElement;
+      const emailInput = document.getElementById(`member${i}Email`) as HTMLInputElement;
+      const mobileInput = document.getElementById(`member${i}Mobile`) as HTMLInputElement;
+      
+      if (nameInput && nameInput.value) {
+        teamMembers.push({
+          name: nameInput.value,
+          email: emailInput ? emailInput.value : '',
+          mobile: mobileInput ? mobileInput.value : ''
+        });
+      }
+    }
+    
+    return teamMembers;
+  };
+  
+  const handleSubmit = async (data: any) => {
     setIsSubmitting(true);
     
-    // Simulate form submission
-    setTimeout(() => {
-      console.log("Form data:", data);
-      setIsSubmitting(false);
+    try {
+      // Get form data and clean it
+      const formData = form.getValues();
+      const teamMembers = collectTeamMemberData();
+      
+      // Create a clean object with only the data we want to store
+      const cleanData = {
+        personalInfo: {
+          firstName: formData.firstName || '',
+          lastName: formData.lastName || '',
+          email: formData.email || '',
+          mobile: formData.mobile || '',
+          linkedin: formData.linkedin || '',
+          github: formData.github || '',
+        },
+        universityInfo: {
+          universityName: formData.universityName || '',
+          universityAddress: formData.universityAddress || '',
+          degree: formData.degree || '',
+          yearOfStudy: formData.yearOfStudy || '',
+        },
+        teamInfo: {
+          teamName: formData.teamName || '',
+          teamLeaderName: formData.teamLeaderName || '',
+          teamLeaderEmail: formData.teamLeaderEmail || '',
+          teamLeaderMobile: formData.teamLeaderMobile || '',
+          teamSize: teamSize,
+          teamMembers: teamMembers,
+        },
+        additionalInfo: {
+          arrivalDateTime: formData.arrivalDateTime || '',
+          dietaryRestrictions: formData.dietaryRestrictions || '',
+          expectations: formData.expectations || '',
+        },
+        metadata: {
+          registrationDate: serverTimestamp(),
+          status: "pending"
+        }
+      };
+      
+      console.log("Sending clean data to Firebase:", cleanData);
+      
+      // Save to Firebase
+      const docRef = await addDoc(collection(db, "registrations"), cleanData);
+      
+      console.log("Registration submitted with ID: ", docRef.id);
+      
       setRegistrationComplete(true);
       toast({
         title: "Registration successful!",
         description: "Thank you for registering for Hack-Finity. You will receive a confirmation email shortly.",
       });
-    }, 1500);
+    } catch (error: any) {
+      console.error("Error submitting registration: ", error);
+      toast({
+        title: "Registration failed",
+        description: `Error: ${error.message || "Unknown error occurred"}`,
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
   
   // Generate team member input fields based on team size
@@ -219,7 +294,7 @@ const RegistrationPage = () => {
                         id="email" 
                         type="email" 
                         placeholder="your@email.com" 
-                        required 
+                        required
                         className="bg-hackfinity-darkblue/50 border-hackfinity-blue/30 text-white" 
                       />
                     </div>
@@ -422,7 +497,7 @@ const RegistrationPage = () => {
                             +
                           </Button>
                         </div>
-                        <p className="text-xs mt-1 md:mt-0 text-hackfinity-gray ml-0 md:ml-2">
+                        <p className="text-xs mt-1 md:mt-0 text-hackfinity-gray mb-0 md:ml-2">
                           (Min: 2, Max: 4)
                         </p>
                       </div>
@@ -456,7 +531,7 @@ const RegistrationPage = () => {
                     <h2 className="text-2xl font-semibold text-white mb-4">Additional Information</h2>
                     
                     <div className="space-y-2">
-                      <Label htmlFor="arrivalDateTime" className="text-white">Expected Time of Arrival</Label>
+                      <Label htmlFor="arrivalDateTime" className="text-white">Expected Day of Arrival</Label>
                       <Input 
                         {...form.register("arrivalDateTime")}
                         id="arrivalDateTime" 
@@ -481,7 +556,7 @@ const RegistrationPage = () => {
                         {...form.register("expectations")}
                         id="expectations" 
                         placeholder="Share your goals and what you're excited about..." 
-                        className="bg-hackfinity-darkblue/50 border-hackfinity-blue/30 text-white"
+                        className="bg-hackfinity-darkblue/50 border-hackfinity-blue/30 text"
                         rows={4}
                       />
                     </div>
