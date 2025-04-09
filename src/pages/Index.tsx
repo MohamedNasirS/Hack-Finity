@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { CountdownTimer } from '../components/CountdownTimer';
@@ -146,94 +146,15 @@ const Squares = ({
   );
 };
 
-// Enhanced HackfinityLogo component
+// Simplified HackfinityLogo component without particle effects
 const HackfinityLogo: React.FC = () => {
-  const logoContainerRef = useRef<HTMLDivElement>(null);
-  const logoRef = useRef<HTMLImageElement>(null);
-  
-  useEffect(() => {
-    const container = logoContainerRef.current;
-    const logo = logoRef.current;
-    if (!container || !logo) return;
-    
-    let animationFrameId: number;
-    let time = 0;
-    
-    // Initial styles
-    logo.style.willChange = 'transform, filter';
-    logo.style.transformOrigin = 'center center';
-    logo.style.transition = 'all 0.4s cubic-bezier(0.25, 0.1, 0.25, 1)';
-
-    const animateLogo = () => {
-      time += 0.01;
-      
-      // Multi-layered animations
-      const pulseIntensity = 0.6 + 0.4 * Math.sin(time * 0.6); // Primary pulse
-      const floatIntensity = Math.sin(time * 0.4) * 2; // Floating effect
-      const rotation = Math.sin(time * 0.3) * 1; // Subtle rotation (-1 to 1 deg)
-      const scale = 1 + Math.sin(time * 0.2) * 0.01; // Very subtle scale
-      
-      // Enhanced glow with multiple layers
-      const glowLayers = [
-        `0 0 ${3 + pulseIntensity * 3}px rgba(0, 180, 255, 0.8)`,
-        `0 0 ${6 + pulseIntensity * 6}px rgba(0, 120, 255, 0.6)`,
-        `0 0 ${10 + pulseIntensity * 8}px rgba(0, 80, 255, 0.4)`
-      ].join(', ');
-      
-      // Apply all transformations
-      logo.style.filter = `drop-shadow(${glowLayers})`;
-      logo.style.transform = `
-        translateY(${floatIntensity}px)
-        rotate(${rotation}deg)
-        scale(${scale})
-      `;
-      
-      animationFrameId = requestAnimationFrame(animateLogo);
-    };
-    
-    // Hover effects
-    const handleMouseEnter = () => {
-      logo.style.transition = 'all 0.3s cubic-bezier(0.25, 0.1, 0.25, 1)';
-      logo.style.transform = 'scale(1.05) rotate(1.5deg)';
-      logo.style.filter = `
-        drop-shadow(0 0 12px rgba(0, 200, 255, 0.9))
-        drop-shadow(0 0 25px rgba(0, 150, 255, 0.7))
-        drop-shadow(0 0 40px rgba(0, 100, 255, 0.5))
-      `;
-    };
-    
-    const handleMouseLeave = () => {
-      logo.style.transition = 'all 0.5s cubic-bezier(0.25, 0.1, 0.25, 1)';
-    };
-    
-    container.addEventListener('mouseenter', handleMouseEnter);
-    container.addEventListener('mouseleave', handleMouseLeave);
-    
-    // Start animation
-    animateLogo();
-    
-    return () => {
-      cancelAnimationFrame(animationFrameId);
-      container.removeEventListener('mouseenter', handleMouseEnter);
-      container.removeEventListener('mouseleave', handleMouseLeave);
-    };
-  }, []);
-  
   return (
-    <div 
-      ref={logoContainerRef}
-      className="relative z-10 flex justify-center items-center group cursor-pointer"
-    >
+    <div className="relative z-10 flex justify-center items-center">
       <img
-        ref={logoRef}
         src="/logo.png"
         alt="Hackfinity Logo"
         className="w-[600px] max-w-[90%] z-10 relative"
       />
-      
-      {/* Subtle reflection effect on hover */}
-      <div className="absolute -bottom-6 left-0 right-0 h-4 bg-gradient-to-t from-blue-500/20 to-transparent 
-                     opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-sm"></div>
     </div>
   );
 };
