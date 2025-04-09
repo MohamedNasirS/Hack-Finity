@@ -9,18 +9,50 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "@/components/ui/use-toast";
 import { CircleCheck } from 'lucide-react';
+import { useForm } from "react-hook-form";
+import { FormField, FormItem, FormLabel, FormControl, FormDescription, FormMessage, Form } from "@/components/ui/form";
 
 const RegistrationPage = () => {
   const [formStep, setFormStep] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [registrationComplete, setRegistrationComplete] = useState(false);
   
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  const form = useForm({
+    defaultValues: {
+      // Personal Info
+      firstName: "",
+      lastName: "",
+      email: "",
+      mobile: "",
+      linkedin: "",
+      github: "",
+      
+      // University Info
+      universityName: "",
+      universityAddress: "",
+      degree: "",
+      yearOfStudy: "",
+      
+      // Team Info
+      teamName: "",
+      teamLeaderName: "",
+      teamLeaderEmail: "",
+      teamLeaderMobile: "",
+      teamMembers: [],
+      
+      // Additional Info
+      arrivalDateTime: "",
+      dietaryRestrictions: "",
+      expectations: ""
+    }
+  });
+  
+  const handleSubmit = (data: any) => {
     setIsSubmitting(true);
     
     // Simulate form submission
     setTimeout(() => {
+      console.log("Form data:", data);
       setIsSubmitting(false);
       setRegistrationComplete(true);
       toast({
@@ -88,217 +120,451 @@ const RegistrationPage = () => {
       </section>
       
       {/* Registration Form */}
-      <section className="py-8 md:py-12 px-4">
+      <section className="py-8 md:py-12 px-4 mb-16">
         <div className="container mx-auto max-w-2xl">
           <div className="bg-hackfinity-darkblue/40 backdrop-blur-sm rounded-xl p-6 md:p-8 border border-hackfinity-blue/20">
             {/* Form Steps Progress */}
             <div className="flex items-center justify-between mb-8">
-              <div className={`w-1/3 h-1 rounded-l-full ${formStep >= 1 ? 'bg-hackfinity-blue' : 'bg-hackfinity-gray/30'}`}></div>
-              <div className={`w-1/3 h-1 ${formStep >= 2 ? 'bg-hackfinity-blue' : 'bg-hackfinity-gray/30'}`}></div>
-              <div className={`w-1/3 h-1 rounded-r-full ${formStep >= 3 ? 'bg-hackfinity-blue' : 'bg-hackfinity-gray/30'}`}></div>
+              <div className={`w-1/4 h-1 rounded-l-full ${formStep >= 1 ? 'bg-hackfinity-blue' : 'bg-hackfinity-gray/30'}`}></div>
+              <div className={`w-1/4 h-1 ${formStep >= 2 ? 'bg-hackfinity-blue' : 'bg-hackfinity-gray/30'}`}></div>
+              <div className={`w-1/4 h-1 ${formStep >= 3 ? 'bg-hackfinity-blue' : 'bg-hackfinity-gray/30'}`}></div>
+              <div className={`w-1/4 h-1 rounded-r-full ${formStep >= 4 ? 'bg-hackfinity-blue' : 'bg-hackfinity-gray/30'}`}></div>
             </div>
             
-            <form onSubmit={handleSubmit}>
-              {formStep === 1 && (
-                <div className="space-y-6 animate-fade-in">
-                  <h2 className="text-2xl font-semibold text-white mb-4">Personal Information</h2>
-                  
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="space-y-2">
-                      <Label htmlFor="firstName" className="text-white">First Name</Label>
-                      <Input id="firstName" placeholder="John" required className="bg-hackfinity-darkblue/50 border-hackfinity-blue/30 text-white" />
+            <Form {...form}>
+              <form onSubmit={form.handleSubmit(handleSubmit)}>
+                {formStep === 1 && (
+                  <div className="space-y-6 animate-fade-in">
+                    <h2 className="text-2xl font-semibold text-white mb-4">Personal Information</h2>
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div className="space-y-2">
+                        <Label htmlFor="firstName" className="text-white">First Name <span className="text-red-500">*</span></Label>
+                        <Input 
+                          {...form.register("firstName", { required: true })}
+                          id="firstName" 
+                          placeholder="John" 
+                          required 
+                          className="bg-hackfinity-darkblue/50 border-hackfinity-blue/30 text-white" 
+                        />
+                      </div>
+                      
+                      <div className="space-y-2">
+                        <Label htmlFor="lastName" className="text-white">Last Name <span className="text-red-500">*</span></Label>
+                        <Input 
+                          {...form.register("lastName", { required: true })}
+                          id="lastName" 
+                          placeholder="Doe" 
+                          required 
+                          className="bg-hackfinity-darkblue/50 border-hackfinity-blue/30 text-white" 
+                        />
+                      </div>
                     </div>
                     
                     <div className="space-y-2">
-                      <Label htmlFor="lastName" className="text-white">Last Name</Label>
-                      <Input id="lastName" placeholder="Doe" required className="bg-hackfinity-darkblue/50 border-hackfinity-blue/30 text-white" />
-                    </div>
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <Label htmlFor="email" className="text-white">Email Address</Label>
-                    <Input id="email" type="email" placeholder="your@email.com" required className="bg-hackfinity-darkblue/50 border-hackfinity-blue/30 text-white" />
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <Label htmlFor="phone" className="text-white">Phone Number</Label>
-                    <Input id="phone" type="tel" placeholder="(123) 456-7890" className="bg-hackfinity-darkblue/50 border-hackfinity-blue/30 text-white" />
-                  </div>
-                  
-                  <div className="pt-4 flex justify-end">
-                    <Button 
-                      type="button" 
-                      onClick={() => setFormStep(2)}
-                      className="bg-hackfinity-blue text-white hover:bg-hackfinity-skyblue"
-                    >
-                      Next
-                    </Button>
-                  </div>
-                </div>
-              )}
-              
-              {formStep === 2 && (
-                <div className="space-y-6 animate-fade-in">
-                  <h2 className="text-2xl font-semibold text-white mb-4">Educational & Skills Information</h2>
-                  
-                  <div className="space-y-2">
-                    <Label htmlFor="education" className="text-white">Education Level</Label>
-                    <Select>
-                      <SelectTrigger className="bg-hackfinity-darkblue/50 border-hackfinity-blue/30 text-white">
-                        <SelectValue placeholder="Select your education level" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="high_school">High School</SelectItem>
-                        <SelectItem value="undergraduate">Undergraduate</SelectItem>
-                        <SelectItem value="graduate">Graduate</SelectItem>
-                        <SelectItem value="phd">PhD</SelectItem>
-                        <SelectItem value="other">Other</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <Label htmlFor="institution" className="text-white">Institution/University</Label>
-                    <Input id="institution" placeholder="University Name" className="bg-hackfinity-darkblue/50 border-hackfinity-blue/30 text-white" />
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <Label className="text-white">Experience Level</Label>
-                    <RadioGroup defaultValue="intermediate">
-                      <div className="flex items-center space-x-2">
-                        <RadioGroupItem value="beginner" id="beginner" />
-                        <Label htmlFor="beginner" className="text-hackfinity-gray">Beginner</Label>
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <RadioGroupItem value="intermediate" id="intermediate" />
-                        <Label htmlFor="intermediate" className="text-hackfinity-gray">Intermediate</Label>
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <RadioGroupItem value="advanced" id="advanced" />
-                        <Label htmlFor="advanced" className="text-hackfinity-gray">Advanced</Label>
-                      </div>
-                    </RadioGroup>
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <Label className="text-white">Skills (Check all that apply)</Label>
-                    <div className="grid grid-cols-2 gap-2">
-                      <div className="flex items-center space-x-2">
-                        <Checkbox id="frontend" />
-                        <Label htmlFor="frontend" className="text-hackfinity-gray">Frontend</Label>
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <Checkbox id="backend" />
-                        <Label htmlFor="backend" className="text-hackfinity-gray">Backend</Label>
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <Checkbox id="mobile" />
-                        <Label htmlFor="mobile" className="text-hackfinity-gray">Mobile</Label>
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <Checkbox id="ml" />
-                        <Label htmlFor="ml" className="text-hackfinity-gray">Machine Learning</Label>
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <Checkbox id="design" />
-                        <Label htmlFor="design" className="text-hackfinity-gray">Design</Label>
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <Checkbox id="blockchain" />
-                        <Label htmlFor="blockchain" className="text-hackfinity-gray">Blockchain</Label>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div className="pt-4 flex justify-between">
-                    <Button 
-                      type="button" 
-                      variant="outline" 
-                      onClick={() => setFormStep(1)}
-                      className="text-white border-white hover:bg-white/10"
-                    >
-                      Back
-                    </Button>
-                    <Button 
-                      type="button" 
-                      onClick={() => setFormStep(3)}
-                      className="bg-hackfinity-blue text-white hover:bg-hackfinity-skyblue"
-                    >
-                      Next
-                    </Button>
-                  </div>
-                </div>
-              )}
-              
-              {formStep === 3 && (
-                <div className="space-y-6 animate-fade-in">
-                  <h2 className="text-2xl font-semibold text-white mb-4">Additional Information</h2>
-                  
-                  <div className="space-y-2">
-                    <Label htmlFor="team" className="text-white">Team Status</Label>
-                    <Select>
-                      <SelectTrigger className="bg-hackfinity-darkblue/50 border-hackfinity-blue/30 text-white">
-                        <SelectValue placeholder="Select your team status" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="solo">Looking for a team</SelectItem>
-                        <SelectItem value="partial">Have some teammates, need more</SelectItem>
-                        <SelectItem value="complete">Have a complete team</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <Label htmlFor="dietary" className="text-white">Dietary Restrictions</Label>
-                    <Input id="dietary" placeholder="e.g., Vegetarian, Vegan, Gluten-free" className="bg-hackfinity-darkblue/50 border-hackfinity-blue/30 text-white" />
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <Label htmlFor="motivation" className="text-white">What are you hoping to gain from Hack-Finity?</Label>
-                    <Textarea 
-                      id="motivation" 
-                      placeholder="Share your goals and what you're excited about..." 
-                      className="bg-hackfinity-darkblue/50 border-hackfinity-blue/30 text-white"
-                      rows={4}
-                    />
-                  </div>
-                  
-                  <div className="space-y-4">
-                    <div className="flex items-top space-x-2">
-                      <Checkbox id="terms" required />
-                      <Label htmlFor="terms" className="text-hackfinity-gray text-sm">
-                        I agree to the <a href="#" className="text-hackfinity-blue hover:text-hackfinity-skyblue">Terms and Conditions</a> and <a href="#" className="text-hackfinity-blue hover:text-hackfinity-skyblue">Privacy Policy</a>.
-                      </Label>
+                      <Label htmlFor="email" className="text-white">Email Address <span className="text-red-500">*</span></Label>
+                      <Input 
+                        {...form.register("email", { required: true })}
+                        id="email" 
+                        type="email" 
+                        placeholder="your@email.com" 
+                        required 
+                        className="bg-hackfinity-darkblue/50 border-hackfinity-blue/30 text-white" 
+                      />
                     </div>
                     
-                    <div className="flex items-top space-x-2">
-                      <Checkbox id="updates" />
-                      <Label htmlFor="updates" className="text-hackfinity-gray text-sm">
-                        I would like to receive updates about future Hack-Finity events and opportunities.
-                      </Label>
+                    <div className="space-y-2">
+                      <Label htmlFor="mobile" className="text-white">Mobile Number <span className="text-red-500">*</span></Label>
+                      <Input 
+                        {...form.register("mobile", { required: true })}
+                        id="mobile" 
+                        type="tel" 
+                        placeholder="(123) 456-7890" 
+                        required
+                        className="bg-hackfinity-darkblue/50 border-hackfinity-blue/30 text-white" 
+                      />
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="linkedin" className="text-white">LinkedIn Profile</Label>
+                      <Input 
+                        {...form.register("linkedin")}
+                        id="linkedin" 
+                        placeholder="https://linkedin.com/in/yourprofile" 
+                        className="bg-hackfinity-darkblue/50 border-hackfinity-blue/30 text-white" 
+                      />
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="github" className="text-white">GitHub Profile <span className="text-red-500">*</span></Label>
+                      <Input 
+                        {...form.register("github", { required: true })}
+                        id="github" 
+                        placeholder="https://github.com/yourusername" 
+                        required
+                        className="bg-hackfinity-darkblue/50 border-hackfinity-blue/30 text-white" 
+                      />
+                    </div>
+                    
+                    <div className="pt-4 flex justify-end">
+                      <Button 
+                        type="button" 
+                        onClick={() => setFormStep(2)}
+                        className="bg-hackfinity-blue text-white hover:bg-hackfinity-skyblue"
+                      >
+                        Next
+                      </Button>
                     </div>
                   </div>
-                  
-                  <div className="pt-4 flex justify-between">
-                    <Button 
-                      type="button" 
-                      variant="outline" 
-                      onClick={() => setFormStep(2)}
-                      className="text-white border-white hover:bg-white/10"
-                    >
-                      Back
-                    </Button>
-                    <Button 
-                      type="submit" 
-                      className="bg-hackfinity-blue text-white hover:bg-hackfinity-skyblue"
-                      disabled={isSubmitting}
-                    >
-                      {isSubmitting ? "Submitting..." : "Complete Registration"}
-                    </Button>
+                )}
+                
+                {formStep === 2 && (
+                  <div className="space-y-6 animate-fade-in">
+                    <h2 className="text-2xl font-semibold text-white mb-4">University Information</h2>
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="universityName" className="text-white">University/Institution Name</Label>
+                      <Input 
+                        {...form.register("universityName", { required: true })}
+                        id="universityName" 
+                        placeholder="University Name" 
+                        className="bg-hackfinity-darkblue/50 border-hackfinity-blue/30 text-white" 
+                      />
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="universityAddress" className="text-white">University/Institution Address</Label>
+                      <Input 
+                        {...form.register("universityAddress", { required: true })}
+                        id="universityAddress" 
+                        placeholder="University Address" 
+                        className="bg-hackfinity-darkblue/50 border-hackfinity-blue/30 text-white" 
+                      />
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="degree" className="text-white">Degree</Label>
+                      <Select onValueChange={(value) => form.setValue("degree", value)}>
+                        <SelectTrigger className="bg-hackfinity-darkblue/50 border-hackfinity-blue/30 text-white">
+                          <SelectValue placeholder="Select your degree" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="btech">B.Tech</SelectItem>
+                          <SelectItem value="bsc">B.Sc</SelectItem>
+                          <SelectItem value="mtech">M.Tech</SelectItem>
+                          <SelectItem value="msc">M.Sc</SelectItem>
+                          <SelectItem value="phd">PhD</SelectItem>
+                          <SelectItem value="other">Other</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="yearOfStudy" className="text-white">Year of Study</Label>
+                      <Select onValueChange={(value) => form.setValue("yearOfStudy", value)}>
+                        <SelectTrigger className="bg-hackfinity-darkblue/50 border-hackfinity-blue/30 text-white">
+                          <SelectValue placeholder="Select your year" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="1">1st Year</SelectItem>
+                          <SelectItem value="2">2nd Year</SelectItem>
+                          <SelectItem value="3">3rd Year</SelectItem>
+                          <SelectItem value="4">4th Year</SelectItem>
+                          <SelectItem value="5">5th Year</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    
+                    <div className="pt-4 flex justify-between">
+                      <Button 
+                        type="button" 
+                        variant="outline" 
+                        onClick={() => setFormStep(1)}
+                        className="text-white border-white hover:bg-white/10"
+                      >
+                        Back
+                      </Button>
+                      <Button 
+                        type="button" 
+                        onClick={() => setFormStep(3)}
+                        className="bg-hackfinity-blue text-white hover:bg-hackfinity-skyblue"
+                      >
+                        Next
+                      </Button>
+                    </div>
                   </div>
-                </div>
-              )}
-            </form>
+                )}
+                
+                {formStep === 3 && (
+                  <div className="space-y-6 animate-fade-in">
+                    <h2 className="text-2xl font-semibold text-white mb-4">Team Information</h2>
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="teamName" className="text-white">Team Name</Label>
+                      <Input 
+                        {...form.register("teamName", { required: true })}
+                        id="teamName" 
+                        placeholder="Awesome Team" 
+                        className="bg-hackfinity-darkblue/50 border-hackfinity-blue/30 text-white" 
+                      />
+                    </div>
+                    
+                    <div className="space-y-4">
+                      <h3 className="text-lg font-medium text-white">Team Leader</h3>
+                      
+                      <div className="space-y-2">
+                        <Label htmlFor="teamLeaderName" className="text-white">Team Leader Name</Label>
+                        <Input 
+                          {...form.register("teamLeaderName", { required: true })}
+                          id="teamLeaderName" 
+                          placeholder="Team Leader's Name" 
+                          className="bg-hackfinity-darkblue/50 border-hackfinity-blue/30 text-white" 
+                        />
+                      </div>
+                      
+                      <div className="space-y-2">
+                        <Label htmlFor="teamLeaderEmail" className="text-white">Team Leader Email</Label>
+                        <Input 
+                          {...form.register("teamLeaderEmail", { required: true })}
+                          id="teamLeaderEmail" 
+                          type="email"
+                          placeholder="leader@example.com" 
+                          className="bg-hackfinity-darkblue/50 border-hackfinity-blue/30 text-white" 
+                        />
+                      </div>
+                      
+                      <div className="space-y-2">
+                        <Label htmlFor="teamLeaderMobile" className="text-white">Team Leader Mobile Number</Label>
+                        <Input 
+                          {...form.register("teamLeaderMobile", { required: true })}
+                          id="teamLeaderMobile" 
+                          type="tel"
+                          placeholder="(123) 456-7890" 
+                          className="bg-hackfinity-darkblue/50 border-hackfinity-blue/30 text-white" 
+                        />
+                      </div>
+                    </div>
+                    
+                    <div className="space-y-4">
+                      <h3 className="text-lg font-medium text-white">Team Members (2-4 members)</h3>
+                      
+                      {/* Team member 1 */}
+                      <div className="space-y-4 p-4 border border-hackfinity-blue/20 rounded-lg">
+                        <h4 className="font-medium text-white">Team Member 1</h4>
+                        <div className="space-y-2">
+                          <Label htmlFor="member1Name" className="text-white">Name</Label>
+                          <Input 
+                            id="member1Name" 
+                            placeholder="Member's Name" 
+                            className="bg-hackfinity-darkblue/50 border-hackfinity-blue/30 text-white" 
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="member1Email" className="text-white">Email</Label>
+                          <Input 
+                            id="member1Email" 
+                            type="email"
+                            placeholder="member@example.com" 
+                            className="bg-hackfinity-darkblue/50 border-hackfinity-blue/30 text-white" 
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="member1Mobile" className="text-white">Mobile Number</Label>
+                          <Input 
+                            id="member1Mobile" 
+                            type="tel"
+                            placeholder="(123) 456-7890" 
+                            className="bg-hackfinity-darkblue/50 border-hackfinity-blue/30 text-white" 
+                          />
+                        </div>
+                      </div>
+                      
+                      {/* Team member 2 */}
+                      <div className="space-y-4 p-4 border border-hackfinity-blue/20 rounded-lg">
+                        <h4 className="font-medium text-white">Team Member 2</h4>
+                        <div className="space-y-2">
+                          <Label htmlFor="member2Name" className="text-white">Name</Label>
+                          <Input 
+                            id="member2Name" 
+                            placeholder="Member's Name" 
+                            className="bg-hackfinity-darkblue/50 border-hackfinity-blue/30 text-white" 
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="member2Email" className="text-white">Email</Label>
+                          <Input 
+                            id="member2Email" 
+                            type="email"
+                            placeholder="member@example.com" 
+                            className="bg-hackfinity-darkblue/50 border-hackfinity-blue/30 text-white" 
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="member2Mobile" className="text-white">Mobile Number</Label>
+                          <Input 
+                            id="member2Mobile" 
+                            type="tel"
+                            placeholder="(123) 456-7890" 
+                            className="bg-hackfinity-darkblue/50 border-hackfinity-blue/30 text-white" 
+                          />
+                        </div>
+                      </div>
+
+                      {/* Team member 3 (optional) */}
+                      <div className="space-y-4 p-4 border border-hackfinity-blue/20 rounded-lg">
+                        <h4 className="font-medium text-white">Team Member 3 (Optional)</h4>
+                        <div className="space-y-2">
+                          <Label htmlFor="member3Name" className="text-white">Name</Label>
+                          <Input 
+                            id="member3Name" 
+                            placeholder="Member's Name" 
+                            className="bg-hackfinity-darkblue/50 border-hackfinity-blue/30 text-white" 
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="member3Email" className="text-white">Email</Label>
+                          <Input 
+                            id="member3Email" 
+                            type="email"
+                            placeholder="member@example.com" 
+                            className="bg-hackfinity-darkblue/50 border-hackfinity-blue/30 text-white" 
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="member3Mobile" className="text-white">Mobile Number</Label>
+                          <Input 
+                            id="member3Mobile" 
+                            type="tel"
+                            placeholder="(123) 456-7890" 
+                            className="bg-hackfinity-darkblue/50 border-hackfinity-blue/30 text-white" 
+                          />
+                        </div>
+                      </div>
+
+                      {/* Team member 4 (optional) */}
+                      <div className="space-y-4 p-4 border border-hackfinity-blue/20 rounded-lg">
+                        <h4 className="font-medium text-white">Team Member 4 (Optional)</h4>
+                        <div className="space-y-2">
+                          <Label htmlFor="member4Name" className="text-white">Name</Label>
+                          <Input 
+                            id="member4Name" 
+                            placeholder="Member's Name" 
+                            className="bg-hackfinity-darkblue/50 border-hackfinity-blue/30 text-white" 
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="member4Email" className="text-white">Email</Label>
+                          <Input 
+                            id="member4Email" 
+                            type="email"
+                            placeholder="member@example.com" 
+                            className="bg-hackfinity-darkblue/50 border-hackfinity-blue/30 text-white" 
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="member4Mobile" className="text-white">Mobile Number</Label>
+                          <Input 
+                            id="member4Mobile" 
+                            type="tel"
+                            placeholder="(123) 456-7890" 
+                            className="bg-hackfinity-darkblue/50 border-hackfinity-blue/30 text-white" 
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div className="pt-4 flex justify-between">
+                      <Button 
+                        type="button" 
+                        variant="outline" 
+                        onClick={() => setFormStep(2)}
+                        className="text-white border-white hover:bg-white/10"
+                      >
+                        Back
+                      </Button>
+                      <Button 
+                        type="button" 
+                        onClick={() => setFormStep(4)}
+                        className="bg-hackfinity-blue text-white hover:bg-hackfinity-skyblue"
+                      >
+                        Next
+                      </Button>
+                    </div>
+                  </div>
+                )}
+                
+                {formStep === 4 && (
+                  <div className="space-y-6 animate-fade-in">
+                    <h2 className="text-2xl font-semibold text-white mb-4">Additional Information</h2>
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="arrivalDateTime" className="text-white">Expected Time of Arrival</Label>
+                      <Input 
+                        {...form.register("arrivalDateTime")}
+                        id="arrivalDateTime" 
+                        type="datetime-local"
+                        className="bg-hackfinity-darkblue/50 border-hackfinity-blue/30 text-white" 
+                      />
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="dietaryRestrictions" className="text-white">Dietary Restrictions</Label>
+                      <Input 
+                        {...form.register("dietaryRestrictions")}
+                        id="dietaryRestrictions" 
+                        placeholder="e.g., Vegetarian, Vegan, Gluten-free" 
+                        className="bg-hackfinity-darkblue/50 border-hackfinity-blue/30 text-white" 
+                      />
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="expectations" className="text-white">What are you hoping to gain from Hack-Finity?</Label>
+                      <Textarea 
+                        {...form.register("expectations")}
+                        id="expectations" 
+                        placeholder="Share your goals and what you're excited about..." 
+                        className="bg-hackfinity-darkblue/50 border-hackfinity-blue/30 text-white"
+                        rows={4}
+                      />
+                    </div>
+                    
+                    <div className="space-y-4">
+                      <div className="flex items-top space-x-2">
+                        <Checkbox id="terms" required />
+                        <Label htmlFor="terms" className="text-hackfinity-gray text-sm">
+                          I agree to the <a href="#" className="text-hackfinity-blue hover:text-hackfinity-skyblue">Terms and Conditions</a> and <a href="#" className="text-hackfinity-blue hover:text-hackfinity-skyblue">Privacy Policy</a>.
+                        </Label>
+                      </div>
+                      
+                      <div className="flex items-top space-x-2">
+                        <Checkbox id="updates" />
+                        <Label htmlFor="updates" className="text-hackfinity-gray text-sm">
+                          I would like to receive updates about future Hack-Finity events and opportunities.
+                        </Label>
+                      </div>
+                    </div>
+                    
+                    <div className="pt-4 flex justify-between">
+                      <Button 
+                        type="button" 
+                        variant="outline" 
+                        onClick={() => setFormStep(3)}
+                        className="text-white border-white hover:bg-white/10"
+                      >
+                        Back
+                      </Button>
+                      <Button 
+                        type="submit" 
+                        className="bg-hackfinity-blue text-white hover:bg-hackfinity-skyblue"
+                        disabled={isSubmitting}
+                      >
+                        {isSubmitting ? "Submitting..." : "Complete Registration"}
+                      </Button>
+                    </div>
+                  </div>
+                )}
+              </form>
+            </Form>
           </div>
         </div>
       </section>
