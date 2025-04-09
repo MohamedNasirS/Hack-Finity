@@ -1,18 +1,262 @@
-
+import React, { useEffect, useRef } from 'react';
 import { NavLink } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { CountdownTimer } from '../components/CountdownTimer';
 import { SponsorSection } from '../components/SponsorSection';
 import { Rocket, Code, Globe, Zap } from 'lucide-react';
 
+// Squares component (unchanged)
+const Squares = ({
+  direction = "right",
+  speed = 1,
+  borderColor = "#999",
+  squareSize = 40,
+  hoverFillColor = "#222",
+}) => {
+  const canvasRef = useRef(null);
+  const requestRef = useRef(null);
+  const numSquaresX = useRef(0);
+  const numSquaresY = useRef(0);
+  const gridOffset = useRef({ x: 0, y: 0 });
+  const hoveredSquareRef = useRef(null);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+
+    const resizeCanvas = () => {
+      canvas.width = canvas.offsetWidth;
+      canvas.height = canvas.offsetHeight;
+      numSquaresX.current = Math.ceil(canvas.width / squareSize) + 1;
+      numSquaresY.current = Math.ceil(canvas.height / squareSize) + 1;
+    };
+
+    window.addEventListener("resize", resizeCanvas);
+    resizeCanvas();
+
+    const drawGrid = () => {
+      if (!ctx) return;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      const startX = Math.floor(gridOffset.current.x / squareSize) * squareSize;
+      const startY = Math.floor(gridOffset.current.y / squareSize) * squareSize;
+
+      for (let x = startX; x < canvas.width + squareSize; x += squareSize) {
+        for (let y = startY; y < canvas.height + squareSize; y += squareSize) {
+          const squareX = x - (gridOffset.current.x % squareSize);
+          const squareY = y - (gridOffset.current.y % squareSize);
+
+          if (
+            hoveredSquareRef.current &&
+            Math.floor((x - startX) / squareSize) === hoveredSquareRef.current.x &&
+            Math.floor((y - startY) / squareSize) === hoveredSquareRef.current.y
+          ) {
+            ctx.fillStyle = hoverFillColor;
+            ctx.fillRect(squareX, squareY, squareSize, squareSize);
+          }
+
+          ctx.strokeStyle = borderColor;
+          ctx.strokeRect(squareX, squareY, squareSize, squareSize);
+        }
+      }
+
+      const gradient = ctx.createRadialGradient(
+        canvas.width / 2,
+        canvas.height / 2,
+        0,
+        canvas.width / 2,
+        canvas.height / 2,
+        Math.sqrt(canvas.width ** 2 + canvas.height ** 2) / 2
+      );
+      gradient.addColorStop(0, "rgba(0, 0, 0, 0)");
+      gradient.addColorStop(1, "#060606");
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+    };
+
+    const updateAnimation = () => {
+      const effectiveSpeed = Math.max(speed, 0.1);
+      switch (direction) {
+        case "right":
+          gridOffset.current.x = (gridOffset.current.x - effectiveSpeed + squareSize) % squareSize;
+          break;
+        case "left":
+          gridOffset.current.x = (gridOffset.current.x + effectiveSpeed + squareSize) % squareSize;
+          break;
+        case "up":
+          gridOffset.current.y = (gridOffset.current.y + effectiveSpeed + squareSize) % squareSize;
+          break;
+        case "down":
+          gridOffset.current.y = (gridOffset.current.y - effectiveSpeed + squareSize) % squareSize;
+          break;
+        case "diagonal":
+          gridOffset.current.x = (gridOffset.current.x - effectiveSpeed + squareSize) % squareSize;
+          gridOffset.current.y = (gridOffset.current.y - effectiveSpeed + squareSize) % squareSize;
+          break;
+        default:
+          break;
+      }
+      drawGrid();
+      requestRef.current = requestAnimationFrame(updateAnimation);
+    };
+
+    const handleMouseMove = (event) => {
+      const rect = canvas.getBoundingClientRect();
+      const mouseX = event.clientX - rect.left;
+      const mouseY = event.clientY - rect.top;
+      const startX = Math.floor(gridOffset.current.x / squareSize) * squareSize;
+      const startY = Math.floor(gridOffset.current.y / squareSize) * squareSize;
+      const hoveredSquareX = Math.floor(
+        (mouseX + gridOffset.current.x - startX) / squareSize
+      );
+      const hoveredSquareY = Math.floor(
+        (mouseY + gridOffset.current.y - startY) / squareSize
+      );
+
+      if (
+        !hoveredSquareRef.current ||
+        hoveredSquareRef.current.x !== hoveredSquareX ||
+        hoveredSquareRef.current.y !== hoveredSquareY
+      ) {
+        hoveredSquareRef.current = { x: hoveredSquareX, y: hoveredSquareY };
+      }
+    };
+
+    const handleMouseLeave = () => {
+      hoveredSquareRef.current = null;
+    };
+
+    canvas.addEventListener("mousemove", handleMouseMove);
+    canvas.addEventListener("mouseleave", handleMouseLeave);
+    requestRef.current = requestAnimationFrame(updateAnimation);
+
+    return () => {
+      window.removeEventListener("resize", resizeCanvas);
+      if (requestRef.current) cancelAnimationFrame(requestRef.current);
+      canvas.removeEventListener("mousemove", handleMouseMove);
+      canvas.removeEventListener("mouseleave", handleMouseLeave);
+    };
+  }, [direction, speed, borderColor, hoverFillColor, squareSize]);
+
+  return (
+    <canvas
+      ref={canvasRef}
+      className="w-full h-full border-none block absolute top-0 left-0 z-0"
+    ></canvas>
+  );
+};
+
+// Enhanced HackfinityLogo component
+const HackfinityLogo: React.FC = () => {
+  const logoContainerRef = useRef<HTMLDivElement>(null);
+  const logoRef = useRef<HTMLImageElement>(null);
+  
+  useEffect(() => {
+    const container = logoContainerRef.current;
+    const logo = logoRef.current;
+    if (!container || !logo) return;
+    
+    let animationFrameId: number;
+    let time = 0;
+    
+    // Initial styles
+    logo.style.willChange = 'transform, filter';
+    logo.style.transformOrigin = 'center center';
+    logo.style.transition = 'all 0.4s cubic-bezier(0.25, 0.1, 0.25, 1)';
+
+    const animateLogo = () => {
+      time += 0.01;
+      
+      // Multi-layered animations
+      const pulseIntensity = 0.6 + 0.4 * Math.sin(time * 0.6); // Primary pulse
+      const floatIntensity = Math.sin(time * 0.4) * 2; // Floating effect
+      const rotation = Math.sin(time * 0.3) * 1; // Subtle rotation (-1 to 1 deg)
+      const scale = 1 + Math.sin(time * 0.2) * 0.01; // Very subtle scale
+      
+      // Enhanced glow with multiple layers
+      const glowLayers = [
+        `0 0 ${3 + pulseIntensity * 3}px rgba(0, 180, 255, 0.8)`,
+        `0 0 ${6 + pulseIntensity * 6}px rgba(0, 120, 255, 0.6)`,
+        `0 0 ${10 + pulseIntensity * 8}px rgba(0, 80, 255, 0.4)`
+      ].join(', ');
+      
+      // Apply all transformations
+      logo.style.filter = `drop-shadow(${glowLayers})`;
+      logo.style.transform = `
+        translateY(${floatIntensity}px)
+        rotate(${rotation}deg)
+        scale(${scale})
+      `;
+      
+      animationFrameId = requestAnimationFrame(animateLogo);
+    };
+    
+    // Hover effects
+    const handleMouseEnter = () => {
+      logo.style.transition = 'all 0.3s cubic-bezier(0.25, 0.1, 0.25, 1)';
+      logo.style.transform = 'scale(1.05) rotate(1.5deg)';
+      logo.style.filter = `
+        drop-shadow(0 0 12px rgba(0, 200, 255, 0.9))
+        drop-shadow(0 0 25px rgba(0, 150, 255, 0.7))
+        drop-shadow(0 0 40px rgba(0, 100, 255, 0.5))
+      `;
+    };
+    
+    const handleMouseLeave = () => {
+      logo.style.transition = 'all 0.5s cubic-bezier(0.25, 0.1, 0.25, 1)';
+    };
+    
+    container.addEventListener('mouseenter', handleMouseEnter);
+    container.addEventListener('mouseleave', handleMouseLeave);
+    
+    // Start animation
+    animateLogo();
+    
+    return () => {
+      cancelAnimationFrame(animationFrameId);
+      container.removeEventListener('mouseenter', handleMouseEnter);
+      container.removeEventListener('mouseleave', handleMouseLeave);
+    };
+  }, []);
+  
+  return (
+    <div 
+      ref={logoContainerRef}
+      className="relative z-10 flex justify-center items-center group cursor-pointer"
+    >
+      <img
+        ref={logoRef}
+        src="/logo.png"
+        alt="Hackfinity Logo"
+        className="w-[600px] max-w-[90%] z-10 relative"
+      />
+      
+      {/* Subtle reflection effect on hover */}
+      <div className="absolute -bottom-6 left-0 right-0 h-4 bg-gradient-to-t from-blue-500/20 to-transparent 
+                     opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-sm"></div>
+    </div>
+  );
+};
+
 const Homepage = () => {
-  // Set your hackathon date here (YYYY-MM-DD format)
   const hackathonDate = '2023-12-31'; 
 
   return (
-    <main className="pt-20">
+    <main>
+      {/* Logo Section with Squares background */}
+      <section className="min-h-screen flex justify-center items-center bg-black relative overflow-hidden">
+        <Squares 
+          direction="diagonal" 
+          speed={0.5} 
+          borderColor="rgba(0, 100, 255, 0.3)" 
+          squareSize={50} 
+          hoverFillColor="rgba(0, 150, 255, 0.2)" 
+        />
+        <HackfinityLogo />
+      </section>
+      
       {/* Hero Section */}
-      <section className="min-h-[90vh] flex flex-col justify-center items-center text-center px-4 pb-16">
+      <section className="min-h-[90vh] flex flex-col justify-center items-center text-center px-4 pb-16 pt-20">
         <div className="container mx-auto max-w-4xl animate-fade-in">
           <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold leading-tight mb-4 font-['Space_Grotesk'] text-gradient">
             Pushing the Boundaries of Innovation
