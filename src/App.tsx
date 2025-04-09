@@ -25,7 +25,7 @@ const App = () => (
       <BrowserRouter>
         <div className="relative min-h-screen font-['Inter']">
           <Aurora 
-            colorStops={["#3A29FF", "#FF94B4", "#FF3232"]} 
+            colorStops={["#00D8FF", "#7CFF67", "#00D8FF"]} 
             blend={0.5} 
             amplitude={1.0}
             speed={0.5}
