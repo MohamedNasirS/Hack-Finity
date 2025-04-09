@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -16,6 +15,7 @@ const RegistrationPage = () => {
   const [formStep, setFormStep] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [registrationComplete, setRegistrationComplete] = useState(false);
+  const [teamSize, setTeamSize] = useState(2); // Default team size (min 2)
   
   const form = useForm({
     defaultValues: {
@@ -60,6 +60,57 @@ const RegistrationPage = () => {
         description: "Thank you for registering for Hack-Finity. You will receive a confirmation email shortly.",
       });
     }, 1500);
+  };
+  
+  // Generate team member input fields based on team size
+  const renderTeamMemberInputs = () => {
+    const teamMemberInputs = [];
+    
+    for (let i = 1; i <= teamSize; i++) {
+      const isOptional = i > 2; // First two members are required, others are optional
+      
+      teamMemberInputs.push(
+        <div 
+          key={`member-${i}`} 
+          className="space-y-4 p-4 border border-hackfinity-blue/20 rounded-lg"
+        >
+          <h4 className="font-medium text-white">
+            Team Member {i} {isOptional ? "(Optional)" : ""}
+          </h4>
+          <div className="space-y-2">
+            <Label htmlFor={`member${i}Name`} className="text-white">Name</Label>
+            <Input 
+              id={`member${i}Name`} 
+              placeholder="Member's Name" 
+              className="bg-hackfinity-darkblue/50 border-hackfinity-blue/30 text-white"
+              required={!isOptional}
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor={`member${i}Email`} className="text-white">Email</Label>
+            <Input 
+              id={`member${i}Email`} 
+              type="email"
+              placeholder="member@example.com" 
+              className="bg-hackfinity-darkblue/50 border-hackfinity-blue/30 text-white"
+              required={!isOptional}
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor={`member${i}Mobile`} className="text-white">Mobile Number</Label>
+            <Input 
+              id={`member${i}Mobile`} 
+              type="tel"
+              placeholder="(123) 456-7890" 
+              className="bg-hackfinity-darkblue/50 border-hackfinity-blue/30 text-white"
+              required={!isOptional}
+            />
+          </div>
+        </div>
+      );
+    }
+    
+    return teamMemberInputs;
   };
   
   if (registrationComplete) {
@@ -346,131 +397,38 @@ const RegistrationPage = () => {
                     </div>
                     
                     <div className="space-y-4">
-                      <h3 className="text-lg font-medium text-white">Team Members (2-4 members)</h3>
-                      
-                      {/* Team member 1 */}
-                      <div className="space-y-4 p-4 border border-hackfinity-blue/20 rounded-lg">
-                        <h4 className="font-medium text-white">Team Member 1</h4>
-                        <div className="space-y-2">
-                          <Label htmlFor="member1Name" className="text-white">Name</Label>
-                          <Input 
-                            id="member1Name" 
-                            placeholder="Member's Name" 
-                            className="bg-hackfinity-darkblue/50 border-hackfinity-blue/30 text-white" 
-                          />
+                      <div className="flex flex-col md:flex-row md:items-center md:gap-4">
+                        <h3 className="text-lg font-medium text-white">Team Size</h3>
+                        <div className="mt-2 md:mt-0 flex items-center">
+                          <Button 
+                            type="button" 
+                            variant="outline"
+                            size="icon"
+                            onClick={() => setTeamSize(Math.max(2, teamSize - 1))} 
+                            disabled={teamSize <= 2}
+                            className="h-8 w-8 border-hackfinity-blue/30 text-white"
+                          >
+                            -
+                          </Button>
+                          <span className="mx-2 text-white min-w-[2rem] text-center">{teamSize}</span>
+                          <Button 
+                            type="button" 
+                            variant="outline"
+                            size="icon"
+                            onClick={() => setTeamSize(Math.min(4, teamSize + 1))}
+                            disabled={teamSize >= 4}
+                            className="h-8 w-8 border-hackfinity-blue/30 text-white"
+                          >
+                            +
+                          </Button>
                         </div>
-                        <div className="space-y-2">
-                          <Label htmlFor="member1Email" className="text-white">Email</Label>
-                          <Input 
-                            id="member1Email" 
-                            type="email"
-                            placeholder="member@example.com" 
-                            className="bg-hackfinity-darkblue/50 border-hackfinity-blue/30 text-white" 
-                          />
-                        </div>
-                        <div className="space-y-2">
-                          <Label htmlFor="member1Mobile" className="text-white">Mobile Number</Label>
-                          <Input 
-                            id="member1Mobile" 
-                            type="tel"
-                            placeholder="(123) 456-7890" 
-                            className="bg-hackfinity-darkblue/50 border-hackfinity-blue/30 text-white" 
-                          />
-                        </div>
+                        <p className="text-xs mt-1 md:mt-0 text-hackfinity-gray ml-0 md:ml-2">
+                          (Min: 2, Max: 4)
+                        </p>
                       </div>
                       
-                      {/* Team member 2 */}
-                      <div className="space-y-4 p-4 border border-hackfinity-blue/20 rounded-lg">
-                        <h4 className="font-medium text-white">Team Member 2</h4>
-                        <div className="space-y-2">
-                          <Label htmlFor="member2Name" className="text-white">Name</Label>
-                          <Input 
-                            id="member2Name" 
-                            placeholder="Member's Name" 
-                            className="bg-hackfinity-darkblue/50 border-hackfinity-blue/30 text-white" 
-                          />
-                        </div>
-                        <div className="space-y-2">
-                          <Label htmlFor="member2Email" className="text-white">Email</Label>
-                          <Input 
-                            id="member2Email" 
-                            type="email"
-                            placeholder="member@example.com" 
-                            className="bg-hackfinity-darkblue/50 border-hackfinity-blue/30 text-white" 
-                          />
-                        </div>
-                        <div className="space-y-2">
-                          <Label htmlFor="member2Mobile" className="text-white">Mobile Number</Label>
-                          <Input 
-                            id="member2Mobile" 
-                            type="tel"
-                            placeholder="(123) 456-7890" 
-                            className="bg-hackfinity-darkblue/50 border-hackfinity-blue/30 text-white" 
-                          />
-                        </div>
-                      </div>
-
-                      {/* Team member 3 (optional) */}
-                      <div className="space-y-4 p-4 border border-hackfinity-blue/20 rounded-lg">
-                        <h4 className="font-medium text-white">Team Member 3 (Optional)</h4>
-                        <div className="space-y-2">
-                          <Label htmlFor="member3Name" className="text-white">Name</Label>
-                          <Input 
-                            id="member3Name" 
-                            placeholder="Member's Name" 
-                            className="bg-hackfinity-darkblue/50 border-hackfinity-blue/30 text-white" 
-                          />
-                        </div>
-                        <div className="space-y-2">
-                          <Label htmlFor="member3Email" className="text-white">Email</Label>
-                          <Input 
-                            id="member3Email" 
-                            type="email"
-                            placeholder="member@example.com" 
-                            className="bg-hackfinity-darkblue/50 border-hackfinity-blue/30 text-white" 
-                          />
-                        </div>
-                        <div className="space-y-2">
-                          <Label htmlFor="member3Mobile" className="text-white">Mobile Number</Label>
-                          <Input 
-                            id="member3Mobile" 
-                            type="tel"
-                            placeholder="(123) 456-7890" 
-                            className="bg-hackfinity-darkblue/50 border-hackfinity-blue/30 text-white" 
-                          />
-                        </div>
-                      </div>
-
-                      {/* Team member 4 (optional) */}
-                      <div className="space-y-4 p-4 border border-hackfinity-blue/20 rounded-lg">
-                        <h4 className="font-medium text-white">Team Member 4 (Optional)</h4>
-                        <div className="space-y-2">
-                          <Label htmlFor="member4Name" className="text-white">Name</Label>
-                          <Input 
-                            id="member4Name" 
-                            placeholder="Member's Name" 
-                            className="bg-hackfinity-darkblue/50 border-hackfinity-blue/30 text-white" 
-                          />
-                        </div>
-                        <div className="space-y-2">
-                          <Label htmlFor="member4Email" className="text-white">Email</Label>
-                          <Input 
-                            id="member4Email" 
-                            type="email"
-                            placeholder="member@example.com" 
-                            className="bg-hackfinity-darkblue/50 border-hackfinity-blue/30 text-white" 
-                          />
-                        </div>
-                        <div className="space-y-2">
-                          <Label htmlFor="member4Mobile" className="text-white">Mobile Number</Label>
-                          <Input 
-                            id="member4Mobile" 
-                            type="tel"
-                            placeholder="(123) 456-7890" 
-                            className="bg-hackfinity-darkblue/50 border-hackfinity-blue/30 text-white" 
-                          />
-                        </div>
-                      </div>
+                      <h3 className="text-lg font-medium text-white">Team Members</h3>
+                      {renderTeamMemberInputs()}
                     </div>
                     
                     <div className="pt-4 flex justify-between">
