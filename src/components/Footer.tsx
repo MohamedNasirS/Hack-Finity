@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom';
-import { Github, Twitter, Facebook, Instagram, Linkedin, ExternalLink } from 'lucide-react';
+import { Instagram, MessageSquare, Mail, Phone, MapPin } from 'lucide-react';
 
 const Footer = () => {
   return (
@@ -15,8 +15,9 @@ const Footer = () => {
               A 24-hour coding challenge to solve real-world problems with cutting-edge technology.
             </p>
           </div>
-          
+
           <div className="grid grid-cols-2 md:grid-cols-3 gap-8">
+            {/* Navigation */}
             <div className="space-y-3">
               <h3 className="text-lg font-semibold">Navigation</h3>
               <ul className="space-y-2 text-sm">
@@ -42,50 +43,63 @@ const Footer = () => {
                 </li>
               </ul>
             </div>
-            
+
+            {/* Contact */}
             <div className="space-y-3">
               <h3 className="text-lg font-semibold">Contact</h3>
-              <ul className="space-y-2 text-sm">
-                <li className="text-hackfinity-gray hover:text-white transition-colors">
-                  <a href="mailto:researchandinnovation.sse@saveetha.com">researchandinnovation.sse@saveetha.com</a>
+              <ul className="space-y-2 text-sm text-hackfinity-gray">
+                <li className="flex items-center space-x-2 hover:text-white transition-colors">
+                  <Mail size={16} />
+                  <a href="mailto:researchandinnovation.sse@saveetha.com">
+                    researchandinnovation.sse@saveetha.com
+                  </a>
                 </li>
-                <li className="text-hackfinity-gray hover:text-white transition-colors">
+                <li className="flex items-center space-x-2 hover:text-white transition-colors">
+                  <Phone size={16} />
                   <a href="tel:+919361860665">+91 93618 60665</a>
                 </li>
-                <li className="text-hackfinity-gray">
-                  Saveetha Nagar, Kanchipuram - Chennai Rd,<br />
-                  Sriperumbadur, Chennai,<br />
-                  Tamil Nadu 602105
+                <li className="flex items-start space-x-2">
+                  <MapPin size={16} className="mt-1" />
+                  <span>
+                    Saveetha Nagar, Kanchipuram - Chennai Rd,<br />
+                    Sriperumbadur, Chennai,<br />
+                    Tamil Nadu 602105
+                  </span>
                 </li>
               </ul>
             </div>
-            
+
+            {/* Follow Us */}
             <div className="space-y-3 col-span-2 md:col-span-1">
               <h3 className="text-lg font-semibold">Follow Us</h3>
               <div className="flex space-x-4">
-                <a href="https://github.com" target="_blank" rel="noopener noreferrer" aria-label="GitHub" className="text-hackfinity-gray hover:text-white transition-colors">
-                  <Github size={20} />
-                </a>
-                <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" aria-label="Twitter" className="text-hackfinity-gray hover:text-white transition-colors">
-                  <Twitter size={20} />
-                </a>
-                <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="text-hackfinity-gray hover:text-white transition-colors">
-                  <Facebook size={20} />
-                </a>
-                <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="text-hackfinity-gray hover:text-white transition-colors">
+                <a
+                  href="https://instagram.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Instagram"
+                  className="text-hackfinity-gray hover:text-white transition-colors"
+                >
                   <Instagram size={20} />
                 </a>
-                <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="text-hackfinity-gray hover:text-white transition-colors">
-                  <Linkedin size={20} />
+                <a
+                  href="https://chat.whatsapp.com/FTbCzg7tUeRCkKvy1c1C29"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="WhatsApp"
+                  className="text-hackfinity-gray hover:text-white transition-colors"
+                >
+                  <MessageSquare size={20} />
                 </a>
               </div>
             </div>
           </div>
         </div>
-        
+
+        {/* Footer Bottom */}
         <div className="mt-12 pt-6 border-t border-hackfinity-darkblue flex flex-col md:flex-row items-center justify-between">
           <p className="text-hackfinity-gray text-sm">
-            &copy; {new Date().getFullYear()} Hack-Finity. All rights reserved.
+            © {new Date().getFullYear()} Hack-Finity. All rights reserved.
           </p>
           <div className="flex space-x-4 mt-4 md:mt-0">
             <a href="#" className="text-hackfinity-gray hover:text-white text-sm transition-colors">
