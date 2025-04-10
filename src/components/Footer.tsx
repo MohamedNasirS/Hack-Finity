@@ -1,4 +1,3 @@
-
 import { NavLink } from 'react-router-dom';
 import { Github, Twitter, Facebook, Instagram, Linkedin, ExternalLink } from 'lucide-react';
 
@@ -47,9 +46,17 @@ const Footer = () => {
             <div className="space-y-3">
               <h3 className="text-lg font-semibold">Contact</h3>
               <ul className="space-y-2 text-sm">
-                <li className="text-hackfinity-gray">info@hackfinity.dev</li>
-                <li className="text-hackfinity-gray">+1 (555) 123-4567</li>
-                <li className="text-hackfinity-gray">123 Innovation Way, Tech City, TC 12345</li>
+                <li className="text-hackfinity-gray hover:text-white transition-colors">
+                  <a href="mailto:researchandinnovation.sse@saveetha.com">researchandinnovation.sse@saveetha.com</a>
+                </li>
+                <li className="text-hackfinity-gray hover:text-white transition-colors">
+                  <a href="tel:+919361860665">+91 93618 60665</a>
+                </li>
+                <li className="text-hackfinity-gray">
+                  Saveetha Nagar, Kanchipuram - Chennai Rd,<br />
+                  Sriperumbadur, Chennai,<br />
+                  Tamil Nadu 602105
+                </li>
               </ul>
             </div>
             

@@ -5,7 +5,148 @@ import { CountdownTimer } from '../components/CountdownTimer';
 import { SponsorSection } from '../components/SponsorSection';
 import { Rocket, Code, Globe, Zap } from 'lucide-react';
 
-// Squares component (unchanged)
+// Particle animation types
+interface Particle {
+  x: number;
+  y: number;
+  targetX: number;
+  targetY: number;
+  color: string;
+}
+
+// Animated Logo Component
+const HackfinityLogo: React.FC = () => {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const animationRef = useRef<number>();
+  const particlesRef = useRef<Particle[]>([]);
+  const [animationComplete, setAnimationComplete] = useState(false);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    const image = new Image();
+    image.src = 'public/logo.png'; // Update with your actual logo path
+
+    image.onload = function () {
+      const scale = 0.5; // Smaller logo
+      canvas.width = image.width * scale;
+      canvas.height = image.height * scale;
+
+      // Draw and capture image data
+      ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      const particles: Particle[] = [];
+      for (let y = 0; y < canvas.height; y += 2) {
+        for (let x = 0; x < canvas.width; x += 2) {
+          const index = (y * canvas.width + x) * 4;
+          const r = imageData.data[index];
+          const g = imageData.data[index + 1];
+          const b = imageData.data[index + 2];
+          const a = imageData.data[index + 3];
+
+          if (a > 0) {
+            particles.push({
+              x: Math.random() * canvas.width * 2,
+              y: Math.random() * canvas.height * 2,
+              targetX: x,
+              targetY: y,
+              color: `rgb(${r}, ${g}, ${b})`,
+            });
+          }
+        }
+      }
+      particlesRef.current = particles;
+
+      animateParticles(shrinkLogo);
+    };
+
+    const animateParticles = (callback: () => void) => {
+      if (!ctx || !canvas) return;
+      
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      let allArrived = true;
+
+      particlesRef.current.forEach((p) => {
+        p.x += (p.targetX - p.x) * 0.07;
+        p.y += (p.targetY - p.y) * 0.07;
+
+        if (Math.abs(p.targetX - p.x) > 0.5 || Math.abs(p.targetY - p.y) > 0.5) {
+          allArrived = false;
+        }
+
+        ctx.fillStyle = p.color;
+        ctx.fillRect(p.x, p.y, 2, 2);
+      });
+
+      if (!allArrived) {
+        animationRef.current = requestAnimationFrame(() => animateParticles(callback));
+      } else {
+        setTimeout(callback, 500);
+      }
+    };
+
+    const shrinkLogo = () => {
+      if (!canvas || !ctx) return;
+      
+      let newScale = 1;
+      const image = new Image();
+      image.src = '/LOGO-WITH-WHITE-RING-PNG.png';
+
+      const shrink = () => {
+        if (!ctx || !canvas) return;
+        
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.save();
+        ctx.translate(canvas.width / 2, canvas.height / 2);
+        ctx.scale(newScale, newScale);
+        ctx.drawImage(image, -canvas.width / 2, -canvas.height / 2, canvas.width, canvas.height);
+        ctx.restore();
+
+        newScale -= 0.05;
+        if (newScale > 0.5) {
+          animationRef.current = requestAnimationFrame(shrink);
+        } else {
+          setAnimationComplete(true);
+        }
+      };
+
+      image.onload = shrink;
+    };
+
+    return () => {
+      if (animationRef.current) {
+        cancelAnimationFrame(animationRef.current);
+      }
+    };
+  }, []);
+
+  return (
+    <div className="relative z-10 flex justify-center items-center w-full h-full">
+      <canvas
+        ref={canvasRef}
+        className={`absolute w-auto h-auto max-w-[600px] max-h-[600px] transition-opacity duration-1000 ${animationComplete ? 'opacity-100' : 'opacity-90'}`}
+      />
+      {animationComplete && (
+        <div className="absolute inset-0 flex items-center justify-center">
+          <img 
+            src="/logo.png" 
+            alt="Hackfinity Logo" 
+            className="w-[600px] max-w-[90%] z-20 opacity-0 animate-fade-in"
+            style={{ animationDelay: '1s' }}
+          />
+        </div>
+      )}
+    </div>
+  );
+};
+
+// Squares background component
 const Squares = ({
   direction = "right",
   speed = 1,
@@ -13,19 +154,21 @@ const Squares = ({
   squareSize = 40,
   hoverFillColor = "#222",
 }) => {
-  const canvasRef = useRef(null);
-  const requestRef = useRef(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const requestRef = useRef<number>();
   const numSquaresX = useRef(0);
   const numSquaresY = useRef(0);
   const gridOffset = useRef({ x: 0, y: 0 });
-  const hoveredSquareRef = useRef(null);
+  const hoveredSquareRef = useRef<{x: number, y: number} | null>(null);
 
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
+    if (!ctx) return;
 
     const resizeCanvas = () => {
+      if (!canvas) return;
       canvas.width = canvas.offsetWidth;
       canvas.height = canvas.offsetHeight;
       numSquaresX.current = Math.ceil(canvas.width / squareSize) + 1;
@@ -36,7 +179,7 @@ const Squares = ({
     resizeCanvas();
 
     const drawGrid = () => {
-      if (!ctx) return;
+      if (!ctx || !canvas) return;
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       const startX = Math.floor(gridOffset.current.x / squareSize) * squareSize;
       const startY = Math.floor(gridOffset.current.y / squareSize) * squareSize;
@@ -100,7 +243,8 @@ const Squares = ({
       requestRef.current = requestAnimationFrame(updateAnimation);
     };
 
-    const handleMouseMove = (event) => {
+    const handleMouseMove = (event: MouseEvent) => {
+      if (!canvas) return;
       const rect = canvas.getBoundingClientRect();
       const mouseX = event.clientX - rect.left;
       const mouseY = event.clientY - rect.top;
@@ -143,19 +287,6 @@ const Squares = ({
       ref={canvasRef}
       className="w-full h-full border-none block absolute top-0 left-0 z-0"
     ></canvas>
-  );
-};
-
-// Simplified HackfinityLogo component without particle effects
-const HackfinityLogo: React.FC = () => {
-  return (
-    <div className="relative z-10 flex justify-center items-center">
-      <img
-        src="/logo.png"
-        alt="Hackfinity Logo"
-        className="w-[600px] max-w-[90%] z-10 relative"
-      />
-    </div>
   );
 };
 
