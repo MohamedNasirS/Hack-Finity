@@ -1,9 +1,10 @@
+
 import { NavLink } from 'react-router-dom';
 import { Instagram, MessageSquare, Mail, Phone, MapPin } from 'lucide-react';
 
 const Footer = () => {
   return (
-    <footer className="bg-hackfinity-darkblue/80 backdrop-blur-md text-white py-12 mt-20">
+    <footer className="bg-hackfinity-darkblue/80 backdrop-blur-md text-white py-12 mt-10 sm:mt-20">
       <div className="container mx-auto px-4">
         <div className="flex flex-col md:flex-row justify-between">
           <div className="mb-8 md:mb-0">
@@ -16,11 +17,11 @@ const Footer = () => {
             </p>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
             {/* Navigation */}
-            <div className="space-y-3">
+            <div className="space-y-4">
               <h3 className="text-lg font-semibold">Navigation</h3>
-              <ul className="space-y-2 text-sm">
+              <ul className="space-y-3 text-sm">
                 <li>
                   <NavLink to="/" className="text-hackfinity-gray hover:text-white transition-colors">
                     Home
@@ -45,12 +46,12 @@ const Footer = () => {
             </div>
 
             {/* Contact */}
-            <div className="space-y-3">
+            <div className="space-y-4 mt-6 sm:mt-0">
               <h3 className="text-lg font-semibold">Contact</h3>
-              <ul className="space-y-2 text-sm text-hackfinity-gray">
+              <ul className="space-y-3 text-sm text-hackfinity-gray">
                 <li className="flex items-center space-x-2 hover:text-white transition-colors">
                   <Mail size={16} />
-                  <a href="mailto:researchandinnovation.sse@saveetha.com">
+                  <a href="mailto:researchandinnovation.sse@saveetha.com" className="break-words">
                     researchandinnovation.sse@saveetha.com
                   </a>
                 </li>
@@ -59,7 +60,7 @@ const Footer = () => {
                   <a href="tel:+919361860665">+91 93618 60665</a>
                 </li>
                 <li className="flex items-start space-x-2">
-                  <MapPin size={16} className="mt-1" />
+                  <MapPin size={16} className="mt-1 shrink-0" />
                   <span>
                     Saveetha Nagar, Kanchipuram - Chennai Rd,<br />
                     Sriperumbadur, Chennai,<br />
@@ -70,7 +71,7 @@ const Footer = () => {
             </div>
 
             {/* Follow Us */}
-            <div className="space-y-3 col-span-2 md:col-span-1">
+            <div className="space-y-4 mt-6 md:mt-0">
               <h3 className="text-lg font-semibold">Follow Us</h3>
               <div className="flex space-x-4">
                 <a
@@ -78,7 +79,7 @@ const Footer = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="Instagram"
-                  className="text-hackfinity-gray hover:text-white transition-colors"
+                  className="text-hackfinity-gray hover:text-white transition-colors p-2"
                 >
                   <Instagram size={20} />
                 </a>
@@ -87,7 +88,7 @@ const Footer = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="WhatsApp"
-                  className="text-hackfinity-gray hover:text-white transition-colors"
+                  className="text-hackfinity-gray hover:text-white transition-colors p-2"
                 >
                   <MessageSquare size={20} />
                 </a>
