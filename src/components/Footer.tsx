@@ -4,10 +4,10 @@ import { Instagram, MessageSquare, Mail, Phone, MapPin } from 'lucide-react';
 
 const Footer = () => {
   return (
-    <footer className="bg-hackfinity-darkblue/80 backdrop-blur-md text-white py-12 mt-10 sm:mt-20">
+    <footer className="bg-hackfinity-darkblue/80 backdrop-blur-md text-white py-10 sm:py-12">
       <div className="container mx-auto px-4">
-        <div className="flex flex-col md:flex-row justify-between">
-          <div className="mb-8 md:mb-0">
+        <div className="flex flex-col md:flex-row gap-8 justify-between">
+          <div className="mb-6 md:mb-0">
             <NavLink to="/" className="flex items-center mb-4">
               <span className="text-white font-bold text-xl mr-1 font-['Space_Grotesk']">Hack</span>
               <span className="text-hackfinity-blue font-bold text-xl font-['Space_Grotesk']">Finity</span>
@@ -21,7 +21,7 @@ const Footer = () => {
             {/* Navigation */}
             <div className="space-y-4">
               <h3 className="text-lg font-semibold">Navigation</h3>
-              <ul className="space-y-3 text-sm">
+              <ul className="space-y-2 text-sm">
                 <li>
                   <NavLink to="/" className="text-hackfinity-gray hover:text-white transition-colors">
                     Home
@@ -46,22 +46,22 @@ const Footer = () => {
             </div>
 
             {/* Contact */}
-            <div className="space-y-4 mt-6 sm:mt-0">
+            <div className="space-y-4">
               <h3 className="text-lg font-semibold">Contact</h3>
-              <ul className="space-y-3 text-sm text-hackfinity-gray">
+              <ul className="space-y-2 text-sm text-hackfinity-gray">
                 <li className="flex items-center space-x-2 hover:text-white transition-colors">
-                  <Mail size={16} />
-                  <a href="mailto:researchandinnovation.sse@saveetha.com" className="break-words">
+                  <Mail size={14} className="shrink-0" />
+                  <a href="mailto:researchandinnovation.sse@saveetha.com" className="break-all">
                     researchandinnovation.sse@saveetha.com
                   </a>
                 </li>
                 <li className="flex items-center space-x-2 hover:text-white transition-colors">
-                  <Phone size={16} />
+                  <Phone size={14} className="shrink-0" />
                   <a href="tel:+919361860665">+91 93618 60665</a>
                 </li>
                 <li className="flex items-start space-x-2">
-                  <MapPin size={16} className="mt-1 shrink-0" />
-                  <span>
+                  <MapPin size={14} className="mt-1 shrink-0" />
+                  <span className="text-sm">
                     Saveetha Nagar, Kanchipuram - Chennai Rd,<br />
                     Sriperumbadur, Chennai,<br />
                     Tamil Nadu 602105
@@ -71,7 +71,7 @@ const Footer = () => {
             </div>
 
             {/* Follow Us */}
-            <div className="space-y-4 mt-6 md:mt-0">
+            <div className="space-y-4">
               <h3 className="text-lg font-semibold">Follow Us</h3>
               <div className="flex space-x-4">
                 <a
@@ -81,7 +81,7 @@ const Footer = () => {
                   aria-label="Instagram"
                   className="text-hackfinity-gray hover:text-white transition-colors p-2"
                 >
-                  <Instagram size={20} />
+                  <Instagram size={18} />
                 </a>
                 <a
                   href="https://chat.whatsapp.com/FTbCzg7tUeRCkKvy1c1C29"
@@ -90,7 +90,7 @@ const Footer = () => {
                   aria-label="WhatsApp"
                   className="text-hackfinity-gray hover:text-white transition-colors p-2"
                 >
-                  <MessageSquare size={20} />
+                  <MessageSquare size={18} />
                 </a>
               </div>
             </div>
@@ -98,15 +98,15 @@ const Footer = () => {
         </div>
 
         {/* Footer Bottom */}
-        <div className="mt-12 pt-6 border-t border-hackfinity-darkblue flex flex-col md:flex-row items-center justify-between">
-          <p className="text-hackfinity-gray text-sm">
+        <div className="mt-8 pt-4 border-t border-hackfinity-darkblue flex flex-col md:flex-row items-center justify-between">
+          <p className="text-hackfinity-gray text-xs sm:text-sm mb-4 md:mb-0">
             © {new Date().getFullYear()} Hack-Finity. All rights reserved.
           </p>
-          <div className="flex space-x-4 mt-4 md:mt-0">
-            <a href="#" className="text-hackfinity-gray hover:text-white text-sm transition-colors">
+          <div className="flex space-x-4 text-xs sm:text-sm">
+            <a href="#" className="text-hackfinity-gray hover:text-white transition-colors">
               Privacy Policy
             </a>
-            <a href="#" className="text-hackfinity-gray hover:text-white text-sm transition-colors">
+            <a href="#" className="text-hackfinity-gray hover:text-white transition-colors">
               Terms of Service
             </a>
           </div>

@@ -49,7 +49,7 @@ const Square: React.FC<SquareProps> = ({ orientation = 'horizontal', delay = 0 }
   return (
     <div
       ref={squareRef}
-      className="absolute w-16 h-16 bg-hackfinity-blue origin-center"
+      className="absolute w-12 h-12 sm:w-16 sm:h-16 bg-hackfinity-blue origin-center rounded-sm"
     ></div>
   );
 };
