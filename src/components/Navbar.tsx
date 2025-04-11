@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
-import { Menu, X } from 'lucide-react';
+import { Menu, X, ChevronRight } from 'lucide-react';
 import { useIsMobile } from "@/hooks/use-mobile";
 
 export const Navbar = () => {
@@ -57,7 +57,7 @@ export const Navbar = () => {
               to="/" 
               className={({ isActive }) => 
                 `text-sm font-medium transition-colors ${
-                  isActive ? 'text-hackfinity-blue' : 'text-white/80 hover:text-white'
+                  isActive ? 'text-hackfinity-blue nav-link-active' : 'text-white/80 hover:text-white'
                 } nav-link`
               }
             >
@@ -67,7 +67,7 @@ export const Navbar = () => {
               to="/about" 
               className={({ isActive }) => 
                 `text-sm font-medium transition-colors ${
-                  isActive ? 'text-hackfinity-blue' : 'text-white/80 hover:text-white'
+                  isActive ? 'text-hackfinity-blue nav-link-active' : 'text-white/80 hover:text-white'
                 } nav-link`
               }
             >
@@ -77,7 +77,7 @@ export const Navbar = () => {
               to="/registration" 
               className={({ isActive }) => 
                 `text-sm font-medium transition-colors ${
-                  isActive ? 'text-hackfinity-blue' : 'text-white/80 hover:text-white'
+                  isActive ? 'text-hackfinity-blue nav-link-active' : 'text-white/80 hover:text-white'
                 } nav-link`
               }
             >
@@ -87,7 +87,7 @@ export const Navbar = () => {
               to="/contact" 
               className={({ isActive }) => 
                 `text-sm font-medium transition-colors ${
-                  isActive ? 'text-hackfinity-blue' : 'text-white/80 hover:text-white'
+                  isActive ? 'text-hackfinity-blue nav-link-active' : 'text-white/80 hover:text-white'
                 } nav-link`
               }
             >
@@ -100,62 +100,69 @@ export const Navbar = () => {
         
           {/* Mobile Navigation Button */}
           <button 
-            className="md:hidden text-white p-1"
+            className="md:hidden text-white p-1 relative z-20"
             onClick={() => setIsOpen(!isOpen)}
             aria-label={isOpen ? "Close menu" : "Open menu"}
           >
-            {isOpen ? <X size={24} /> : <Menu size={24} />}
+            {isOpen ? 
+              <X size={24} className="transition-all duration-300 rotate-0 hover:rotate-90" /> : 
+              <Menu size={24} className="transition-all duration-300 hover:scale-110" />
+            }
           </button>
         </div>
       </div>
     
-      {/* Mobile Navigation Menu */}
+      {/* Mobile Navigation Menu with improved animation */}
       {isOpen && (
-        <div className="md:hidden fixed top-[56px] sm:top-[64px] left-0 w-full h-[calc(100vh-56px)] sm:h-[calc(100vh-64px)] bg-hackfinity-darkblue/95 backdrop-blur-md py-4 shadow-lg animate-fade-in overflow-y-auto">
-          <nav className="flex flex-col space-y-2 px-6">
+        <div className="md:hidden fixed top-[56px] sm:top-[64px] left-0 w-full h-[calc(100vh-56px)] sm:h-[calc(100vh-64px)] bg-hackfinity-darkblue/95 backdrop-blur-md py-4 shadow-lg mobile-menu-enter overflow-y-auto z-10">
+          <nav className="flex flex-col space-y-1 px-6">
             <NavLink 
               to="/" 
               className={({ isActive }) => 
-                `text-base font-medium py-3 transition-colors ${
-                  isActive ? 'text-hackfinity-blue' : 'text-white/80 hover:text-white'
-                }`
+                `text-base font-medium py-3 transition-colors flex items-center justify-between ${
+                  isActive ? 'text-hackfinity-blue nav-mobile-link-active' : 'text-white/80 hover:text-white'
+                } nav-mobile-link`
               }
               onClick={() => setIsOpen(false)}
             >
-              Home
+              <span>Home</span>
+              <ChevronRight size={16} className="text-hackfinity-blue/70" />
             </NavLink>
             <NavLink 
               to="/about" 
               className={({ isActive }) => 
-                `text-base font-medium py-3 transition-colors ${
-                  isActive ? 'text-hackfinity-blue' : 'text-white/80 hover:text-white'
-                }`
+                `text-base font-medium py-3 transition-colors flex items-center justify-between ${
+                  isActive ? 'text-hackfinity-blue nav-mobile-link-active' : 'text-white/80 hover:text-white'
+                } nav-mobile-link`
               }
               onClick={() => setIsOpen(false)}
             >
-              About
+              <span>About</span>
+              <ChevronRight size={16} className="text-hackfinity-blue/70" />
             </NavLink>
             <NavLink 
               to="/registration" 
               className={({ isActive }) => 
-                `text-base font-medium py-3 transition-colors ${
-                  isActive ? 'text-hackfinity-blue' : 'text-white/80 hover:text-white'
-                }`
+                `text-base font-medium py-3 transition-colors flex items-center justify-between ${
+                  isActive ? 'text-hackfinity-blue nav-mobile-link-active' : 'text-white/80 hover:text-white'
+                } nav-mobile-link`
               }
               onClick={() => setIsOpen(false)}
             >
-              Registration
+              <span>Registration</span>
+              <ChevronRight size={16} className="text-hackfinity-blue/70" />
             </NavLink>
             <NavLink 
               to="/contact" 
               className={({ isActive }) => 
-                `text-base font-medium py-3 transition-colors ${
-                  isActive ? 'text-hackfinity-blue' : 'text-white/80 hover:text-white'
-                }`
+                `text-base font-medium py-3 transition-colors flex items-center justify-between ${
+                  isActive ? 'text-hackfinity-blue nav-mobile-link-active' : 'text-white/80 hover:text-white'
+                } nav-mobile-link`
               }
               onClick={() => setIsOpen(false)}
             >
-              Contact Us
+              <span>Contact Us</span>
+              <ChevronRight size={16} className="text-hackfinity-blue/70" />
             </NavLink>
             <div className="pt-4">
               <Button asChild className="bg-hackfinity-blue text-white w-full border-none hover:bg-hackfinity-skyblue py-5 text-base">

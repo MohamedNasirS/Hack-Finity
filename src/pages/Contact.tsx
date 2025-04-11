@@ -29,33 +29,34 @@ const ContactPage = () => {
   
   return (
     <main className="pt-20">
-      {/* Hero Section */}
-      <section className="py-12 md:py-16 text-center px-4">
+      {/* Hero Section - More compact on mobile */}
+      <section className="py-8 md:py-12 text-center px-4">
         <div className="container mx-auto max-w-4xl animate-fade-in">
-          <h1 className="text-4xl md:text-5xl font-bold mb-6 font-['Space_Grotesk'] text-gradient">
+          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 font-['Space_Grotesk'] text-gradient">
             Contact Us
           </h1>
-          <p className="text-xl text-hackfinity-gray mb-8 max-w-3xl mx-auto">
-            Have questions or need help? We're here for you. Reach out to the Hack-Finity team.
+          <p className="text-lg md:text-xl text-hackfinity-gray mb-6 max-w-3xl mx-auto">
+            Have questions or need help? We're here for you.
           </p>
         </div>
       </section>
       
-      {/* Contact Form & Information */}
-      <section className="py-8 md:py-12 px-4">
+      {/* Contact Form & Information - Optimized Layout */}
+      <section className="py-6 md:py-8 px-4">
         <div className="container mx-auto max-w-6xl">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            <div className="bg-hackfinity-darkblue/40 backdrop-blur-sm rounded-xl p-6 md:p-8 border border-hackfinity-blue/20">
-              <h2 className="text-2xl font-semibold text-white mb-6">Send Us a Message</h2>
+          <div className="grid grid-cols-1 gap-6 lg:grid-cols-5">
+            {/* Form Section - Takes 3/5 of the space on desktop */}
+            <div className="lg:col-span-3 bg-hackfinity-darkblue/40 backdrop-blur-sm rounded-xl p-5 md:p-6 border border-hackfinity-blue/20">
+              <h2 className="text-xl md:text-2xl font-semibold text-white mb-5">Send Us a Message</h2>
               
               {messageSubmitted ? (
-                <div className="text-center py-8 animate-fade-in">
-                  <div className="mx-auto w-16 h-16 bg-hackfinity-blue/20 rounded-full flex items-center justify-center mb-6">
-                    <CircleCheck className="text-hackfinity-blue" size={32} />
+                <div className="text-center py-6 animate-fade-in">
+                  <div className="mx-auto w-14 h-14 bg-hackfinity-blue/20 rounded-full flex items-center justify-center mb-4">
+                    <CircleCheck className="text-hackfinity-blue" size={28} />
                   </div>
-                  <h3 className="text-xl font-semibold text-white mb-4">Message Sent!</h3>
-                  <p className="text-hackfinity-gray mb-6">
-                    Thank you for reaching out. We've received your message and will get back to you as soon as possible.
+                  <h3 className="text-lg font-semibold text-white mb-3">Message Sent!</h3>
+                  <p className="text-hackfinity-gray mb-5 text-sm md:text-base">
+                    Thank you for reaching out. We've received your message and will get back to you soon.
                   </p>
                   <Button 
                     type="button" 
@@ -66,8 +67,8 @@ const ContactPage = () => {
                   </Button>
                 </div>
               ) : (
-                <form onSubmit={handleSubmit} className="space-y-6">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <form onSubmit={handleSubmit} className="space-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <Label htmlFor="contactName" className="text-white">Your Name</Label>
                       <Input id="contactName" placeholder="John Doe" required className="bg-hackfinity-darkblue/50 border-hackfinity-blue/30 text-white" />
@@ -102,7 +103,7 @@ const ContactPage = () => {
                       placeholder="Your message here..." 
                       required
                       className="bg-hackfinity-darkblue/50 border-hackfinity-blue/30 text-white"
-                      rows={6}
+                      rows={4}
                     />
                   </div>
                   
@@ -118,18 +119,20 @@ const ContactPage = () => {
               )}
             </div>
             
-            <div className="space-y-8">
-              <div className="bg-hackfinity-darkblue/40 backdrop-blur-sm rounded-xl p-6 md:p-8 border border-hackfinity-blue/20">
-                <h2 className="text-2xl font-semibold text-white mb-6">Contact Information</h2>
+            {/* Info Section - Takes 2/5 of the space on desktop */}
+            <div className="lg:col-span-2 space-y-6">
+              {/* Contact Info */}
+              <div className="bg-hackfinity-darkblue/40 backdrop-blur-sm rounded-xl p-5 md:p-6 border border-hackfinity-blue/20">
+                <h2 className="text-xl md:text-2xl font-semibold text-white mb-4">Contact Information</h2>
                 
-                <div className="space-y-6">
+                <div className="space-y-4">
                   <div className="flex items-start">
-                    <div className="w-10 h-10 bg-hackfinity-blue/20 rounded-full flex items-center justify-center shrink-0 mr-4">
-                      <Mail className="text-hackfinity-blue" size={20} />
+                    <div className="w-8 h-8 bg-hackfinity-blue/20 rounded-full flex items-center justify-center shrink-0 mr-3">
+                      <Mail className="text-hackfinity-blue" size={16} />
                     </div>
                     <div>
-                      <h3 className="text-lg font-medium text-white mb-1">Email</h3>
-                      <p className="text-hackfinity-gray">
+                      <h3 className="text-base font-medium text-white mb-1">Email</h3>
+                      <p className="text-hackfinity-gray text-sm">
                         <a href="mailto:info@hackfinity.dev" className="hover:text-hackfinity-blue">info@hackfinity.dev</a><br />
                         <a href="mailto:support@hackfinity.dev" className="hover:text-hackfinity-blue">support@hackfinity.dev</a>
                       </p>
@@ -137,25 +140,25 @@ const ContactPage = () => {
                   </div>
                   
                   <div className="flex items-start">
-                    <div className="w-10 h-10 bg-hackfinity-blue/20 rounded-full flex items-center justify-center shrink-0 mr-4">
-                      <Phone className="text-hackfinity-blue" size={20} />
+                    <div className="w-8 h-8 bg-hackfinity-blue/20 rounded-full flex items-center justify-center shrink-0 mr-3">
+                      <Phone className="text-hackfinity-blue" size={16} />
                     </div>
                     <div>
-                      <h3 className="text-lg font-medium text-white mb-1">Phone</h3>
-                      <p className="text-hackfinity-gray">
+                      <h3 className="text-base font-medium text-white mb-1">Phone</h3>
+                      <p className="text-hackfinity-gray text-sm">
                         <a href="tel:+11234567890" className="hover:text-hackfinity-blue">+1 (123) 456-7890</a><br />
-                        <span className="text-sm">Monday - Friday, 9am - 5pm EST</span>
+                        <span className="text-xs">Monday - Friday, 9am - 5pm EST</span>
                       </p>
                     </div>
                   </div>
                   
                   <div className="flex items-start">
-                    <div className="w-10 h-10 bg-hackfinity-blue/20 rounded-full flex items-center justify-center shrink-0 mr-4">
-                      <MapPin className="text-hackfinity-blue" size={20} />
+                    <div className="w-8 h-8 bg-hackfinity-blue/20 rounded-full flex items-center justify-center shrink-0 mr-3">
+                      <MapPin className="text-hackfinity-blue" size={16} />
                     </div>
                     <div>
-                      <h3 className="text-lg font-medium text-white mb-1">Location</h3>
-                      <p className="text-hackfinity-gray">
+                      <h3 className="text-base font-medium text-white mb-1">Location</h3>
+                      <p className="text-hackfinity-gray text-sm">
                         University Technology Center<br />
                         123 Innovation Way<br />
                         Tech City, TC 12345
@@ -165,35 +168,29 @@ const ContactPage = () => {
                 </div>
               </div>
               
-              <div className="bg-hackfinity-darkblue/40 backdrop-blur-sm rounded-xl p-6 md:p-8 border border-hackfinity-blue/20">
-                <h2 className="text-2xl font-semibold text-white mb-6">Frequently Asked Questions</h2>
+              {/* FAQ Section - Optimized for mobile */}
+              <div className="bg-hackfinity-darkblue/40 backdrop-blur-sm rounded-xl p-5 md:p-6 border border-hackfinity-blue/20">
+                <h2 className="text-xl md:text-2xl font-semibold text-white mb-4">Quick FAQs</h2>
                 
-                <div className="space-y-4">
+                <div className="space-y-3">
                   <div>
-                    <h3 className="text-lg font-medium text-white mb-1">When is the hackathon?</h3>
-                    <p className="text-hackfinity-gray">
-                      Hack-Finity will take place on December 31, 2023 - January 1, 2024, starting at 12:00 PM.
+                    <h3 className="text-base font-medium text-white mb-0.5">When is the hackathon?</h3>
+                    <p className="text-hackfinity-gray text-sm">
+                      December 31, 2023 - January 1, 2024
                     </p>
                   </div>
                   
                   <div>
-                    <h3 className="text-lg font-medium text-white mb-1">Who can participate?</h3>
-                    <p className="text-hackfinity-gray">
-                      Hack-Finity is open to all students and professionals interested in technology and innovation.
+                    <h3 className="text-base font-medium text-white mb-0.5">Who can participate?</h3>
+                    <p className="text-hackfinity-gray text-sm">
+                      All students and professionals in technology.
                     </p>
                   </div>
                   
                   <div>
-                    <h3 className="text-lg font-medium text-white mb-1">Is there a registration fee?</h3>
-                    <p className="text-hackfinity-gray">
-                      No, participation is free for all accepted applicants.
-                    </p>
-                  </div>
-                  
-                  <div>
-                    <h3 className="text-lg font-medium text-white mb-1">What should I bring?</h3>
-                    <p className="text-hackfinity-gray">
-                      Bring your laptop, charger, and any other devices you might need. We'll provide food, drinks, and a workspace.
+                    <h3 className="text-base font-medium text-white mb-0.5">Is there a registration fee?</h3>
+                    <p className="text-hackfinity-gray text-sm">
+                      No, participation is free for accepted applicants.
                     </p>
                   </div>
                 </div>
@@ -204,11 +201,11 @@ const ContactPage = () => {
       </section>
       
       {/* Map Section */}
-      <section className="py-12 px-4">
+      <section className="py-8 px-4">
         <div className="container mx-auto max-w-6xl">
-          <div className="bg-hackfinity-darkblue/40 backdrop-blur-sm rounded-xl p-4 border border-hackfinity-blue/20">
-            <div className="bg-gray-700/50 h-80 rounded-lg flex items-center justify-center">
-              <p className="text-hackfinity-gray text-center px-4">
+          <div className="bg-hackfinity-darkblue/40 backdrop-blur-sm rounded-xl p-3 sm:p-4 border border-hackfinity-blue/20">
+            <div className="bg-gray-700/50 h-64 sm:h-80 rounded-lg flex items-center justify-center">
+              <p className="text-hackfinity-gray text-center text-sm sm:text-base px-4">
                 Interactive map would be displayed here. For this demo, it's a placeholder.
               </p>
             </div>
