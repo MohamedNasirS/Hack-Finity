@@ -1,0 +1,35 @@
+.circular-gallery {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  cursor: grab;
+  position: relative;
+  z-index: 1;
+}
+
+.circular-gallery:active {
+  cursor: grabbing;
+}
+
+/* Add a subtle gradient overlay to blend with the background */
+.circular-gallery::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100px;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.circular-gallery::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100px;
+  pointer-events: none;
+  z-index: 2;
+}
