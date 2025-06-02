@@ -69,11 +69,11 @@ const TimelineSection = () => {
       <div className="relative">
         {/* Timeline line - will grow as user scrolls */}
         <div 
-          className="absolute left-1/2 transform -translate-x-1/2 w-0.5 bg-gray-700 timeline-line"
+          className="absolute left-1/2 transform -translate-x-1/2 w-0.5 bg-gray-700/30 backdrop-blur-sm timeline-line"
           style={{ height: '100%' }}
         >
           <div 
-            className="absolute top-0 left-0 w-full bg-[#009dff] transition-all duration-500"
+            className="absolute top-0 left-0 w-full bg-[#009dff]/80 backdrop-blur-sm transition-all duration-500"
             style={{ height: `${lineHeight}%` }}
           ></div>
         </div>
@@ -89,18 +89,18 @@ const TimelineSection = () => {
             >
               {/* Dot */}
               <div 
-                className={`absolute w-4 h-4 rounded-full border-4 border-[#111] left-1/2 transform -translate-x-1/2 top-6 transition-all duration-500 ${
-                  isVisible ? 'opacity-100 bg-[#009dff] scale-100' : 'opacity-0 bg-transparent scale-50'
+                className={`absolute w-4 h-4 rounded-full border-4 border-[#111]/20 backdrop-blur-sm left-1/2 transform -translate-x-1/2 top-6 transition-all duration-500 ${
+                  isVisible ? 'opacity-100 bg-[#009dff]/80 scale-100' : 'opacity-0 bg-transparent scale-50'
                 }`}
               ></div>
               
               {/* Content */}
               <div 
-                className={`bg-[#111] p-6 rounded-lg border transition-all duration-500 hover:scale-[1.02] ${
+                className={`bg-white/5 backdrop-blur-lg p-6 rounded-lg border border-white/10 transition-all duration-500 hover:scale-[1.02] ${
                   isEven ? 'text-right mr-6' : 'text-left ml-6'
                 } ${
                   isVisible 
-                    ? 'opacity-100 translate-y-0 border-[#009dff] shadow-lg' 
+                    ? 'opacity-100 translate-y-0 border-[#009dff]/50 shadow-lg' 
                     : 'opacity-0 translate-y-10 border-transparent'
                 }`}
               >
@@ -158,14 +158,14 @@ const Homepage = () => {
           <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold leading-tight mb-4 font-['Space_Grotesk'] text-white">
             Pushing the Boundaries of Innovation
           </h1>
-          <p className="text-xl md:text-2xl text-gray-400 mb-8 max-w-3xl mx-auto">
+          <p className="text-xl md:text-2xl text-gray-300 mb-8 max-w-3xl mx-auto">
             A 24-hour coding challenge to solve real-world problems with cutting-edge technology.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
             <Button asChild size="lg" className="bg-[#009dff] text-white hover:bg-[#00b0ff] transition-all animate-btn-pulse">
               <NavLink to="/registration">Register Now</NavLink>
             </Button>
-            <Button asChild variant="outline" size="lg" className="text-white border-white hover:bg-white/10">
+            <Button asChild variant="outline" size="lg" className="text-white border-white/30 hover:bg-white/10 backdrop-blur-sm">
               <NavLink to="/about">Learn More</NavLink>
             </Button>
           </div>
@@ -180,7 +180,7 @@ const Homepage = () => {
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">What Makes Us Different</h2>
-            <p className="text-gray-400 max-w-2xl mx-auto">
+            <p className="text-gray-300 max-w-2xl mx-auto">
               Hack-Finity offers a unique space-tech inspired environment for innovation and collaboration.
             </p>
           </div>
@@ -194,14 +194,14 @@ const Homepage = () => {
             ].map(({ Icon, title, desc }, idx) => (
               <div 
                 key={idx} 
-                className="bg-[#111] p-6 rounded-lg border border-[#009dff] transition-transform hover:scale-105 opacity-0 animate-fade-in-up"
+                className="bg-white/5 backdrop-blur-lg p-6 rounded-lg border border-white/10 transition-transform hover:scale-105 hover:border-[#009dff]/50 opacity-0 animate-fade-in-up"
                 style={{ animationDelay: `${idx * 100 + 1200}ms` }}
               >
-                <div className="w-12 h-12 bg-[#009dff]/20 rounded-full flex items-center justify-center mb-4">
+                <div className="w-12 h-12 bg-[#009dff]/20 rounded-full flex items-center justify-center mb-4 backdrop-blur-sm">
                   <Icon className="text-[#009dff]" size={24} />
                 </div>
                 <h3 className="text-xl font-semibold text-white mb-2">{title}</h3>
-                <p className="text-gray-400">{desc}</p>
+                <p className="text-gray-300">{desc}</p>
               </div>
             ))}
           </div>
@@ -212,10 +212,10 @@ const Homepage = () => {
 
       <section className="py-20 relative">
         <div className="container mx-auto px-4">
-          <div className="bg-[#111] rounded-xl p-8 md:p-12 text-center max-w-4xl mx-auto border border-[#009dff] opacity-0 animate-fade-in-up"
+          <div className="bg-white/5 backdrop-blur-lg rounded-xl p-8 md:p-12 text-center max-w-4xl mx-auto border border-white/10 hover:border-[#009dff]/50 transition-all opacity-0 animate-fade-in-up"
                style={{ animationDelay: '1800ms' }}>
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Ready to Hack the Future?</h2>
-            <p className="text-gray-400 max-w-2xl mx-auto mb-8">
+            <p className="text-gray-300 max-w-2xl mx-auto mb-8">
               Join hundreds of innovators and tech enthusiasts for an unforgettable 24-hour coding experience.
             </p>
             <Button asChild size="lg" className="bg-[#009dff] text-white hover:bg-[#00b0ff]">
