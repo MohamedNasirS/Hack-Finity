@@ -65,7 +65,7 @@ const TimelineSection = () => {
 };
 
 const Homepage = () => {
-  const hackathonDate = '2023-12-31';
+  const hackathonDate = '2025-06-05T12:00:00';
 
   return (
     <main className="overflow-x-hidden">
