@@ -176,7 +176,7 @@ const RegistrationPage = () => {
             <Input 
               id={`member${i}Mobile`} 
               type="tel"
-              placeholder="(123) 456-7890" 
+              placeholder=" +91 1234567890 " 
               className="bg-hackfinity-darkblue/50 border-hackfinity-blue/30 text-white"
               required={!isOptional}
             />
@@ -305,7 +305,7 @@ const RegistrationPage = () => {
                         {...form.register("mobile", { required: true })}
                         id="mobile" 
                         type="tel" 
-                        placeholder="(123) 456-7890" 
+                        placeholder="+91 1234567890 " 
                         required
                         className="bg-hackfinity-darkblue/50 border-hackfinity-blue/30 text-white" 
                       />
@@ -465,7 +465,7 @@ const RegistrationPage = () => {
                           {...form.register("teamLeaderMobile", { required: true })}
                           id="teamLeaderMobile" 
                           type="tel"
-                          placeholder="(123) 456-7890" 
+                          placeholder="+91 1234567890 " 
                           className="bg-hackfinity-darkblue/50 border-hackfinity-blue/30 text-white" 
                         />
                       </div>
