@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { CountdownTimer } from '../components/CountdownTimer';
@@ -17,40 +17,92 @@ const TIMELINE_ITEMS = [
 ];
 
 const TimelineSection = () => {
+  const [lineHeight, setLineHeight] = useState(0);
+  const [visibleItems, setVisibleItems] = useState([]);
+
+  useEffect(() => {
+    const timelineSection = document.querySelector('.timeline-section');
+    const timelineLine = document.querySelector('.timeline-line');
+    const timelineItems = document.querySelectorAll('.timeline-item');
+
+    const handleScroll = () => {
+      // Calculate line height based on scroll position
+      const sectionTop = timelineSection.getBoundingClientRect().top;
+      const sectionHeight = timelineSection.getBoundingClientRect().height;
+      const scrollPosition = window.scrollY;
+      const windowHeight = window.innerHeight;
+
+      // Only animate when section is in view
+      if (sectionTop < windowHeight && sectionTop + sectionHeight > 0) {
+        // Calculate percentage of section visible
+        const visiblePercent = Math.min(
+          100,
+          Math.max(0, ((windowHeight - sectionTop) / sectionHeight) * 100)
+        );
+
+        setLineHeight(visiblePercent);
+
+        // Check which items are visible
+        const newVisibleItems = [];
+        timelineItems.forEach((item, index) => {
+          const itemTop = item.getBoundingClientRect().top;
+          if (itemTop < windowHeight * 0.75) {
+            newVisibleItems.push(index);
+          }
+        });
+        setVisibleItems(newVisibleItems);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    // Initial check
+    handleScroll();
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
   return (
-    <div className="mt-16">
+    <div className="timeline-section mt-16">
       <h2 className="text-3xl font-bold text-white mb-10 text-center">Event Timeline</h2>
       <div className="relative">
-        {/* Timeline line */}
-        <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-0.5 bg-[#009dff]"></div>
+        {/* Timeline line - will grow as user scrolls */}
+        <div 
+          className="absolute left-1/2 transform -translate-x-1/2 w-0.5 bg-gray-700 timeline-line"
+          style={{ height: '100%' }}
+        >
+          <div 
+            className="absolute top-0 left-0 w-full bg-[#009dff] transition-all duration-500"
+            style={{ height: `${lineHeight}%` }}
+          ></div>
+        </div>
         
         {TIMELINE_ITEMS.map((item, index) => {
           const isEven = index % 2 === 0;
-          const baseDelay = index * 150;
+          const isVisible = visibleItems.includes(index);
           
           return (
             <div 
               key={index} 
-              className={`relative mb-10 w-full ${isEven ? 'pr-[50%]' : 'pl-[50%]'}`}
+              className={`relative mb-10 w-full timeline-item ${isEven ? 'pr-[50%]' : 'pl-[50%]'}`}
             >
               {/* Dot */}
               <div 
-                className="absolute w-4 h-4 rounded-full bg-[#009dff] border-4 border-[#111] left-1/2 transform -translate-x-1/2 top-6 opacity-0 animate-fade-in"
-                style={{ 
-                  animationDelay: `${baseDelay}ms`,
-                  animationDuration: '400ms'
-                }}
+                className={`absolute w-4 h-4 rounded-full border-4 border-[#111] left-1/2 transform -translate-x-1/2 top-6 transition-all duration-500 ${
+                  isVisible ? 'opacity-100 bg-[#009dff] scale-100' : 'opacity-0 bg-transparent scale-50'
+                }`}
               ></div>
               
               {/* Content */}
               <div 
-                className={`bg-[#111] p-6 rounded-lg border border-[#009dff] shadow-lg transition-all duration-500 hover:scale-[1.02] opacity-0 animate-fade-in-up ${
+                className={`bg-[#111] p-6 rounded-lg border transition-all duration-500 hover:scale-[1.02] ${
                   isEven ? 'text-right mr-6' : 'text-left ml-6'
+                } ${
+                  isVisible 
+                    ? 'opacity-100 translate-y-0 border-[#009dff] shadow-lg' 
+                    : 'opacity-0 translate-y-10 border-transparent'
                 }`}
-                style={{ 
-                  animationDelay: `${baseDelay + 100}ms`,
-                  animationDuration: '600ms'
-                }}
               >
                 <h3 className="text-lg font-semibold text-white">{item.title}</h3>
                 <p className="text-sm text-[#009dff] mb-2">{item.time}</p>
